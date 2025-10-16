@@ -15,11 +15,11 @@ const Home = () => {
       }} />
         
         <div className="container mx-auto px-4 relative z-10 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in text-stone-300">
             🎶 <span className="text-primary">M7</span> Produções Artísticas
           </h1>
-          <p className="text-xl md:text-2xl text-foreground/90 mb-8 max-w-3xl mx-auto">Levamos música e arte aos palcos do Brasil.</p>
-          <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-stone-50">Levamos música e arte aos palcos do Brasil.</p>
+          <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto text-stone-50">
             Apresentamos um elenco com artistas de expressão nacional, prontos para eventos, festivais e programações culturais.
           </p>
           <Button asChild size="lg" className="text-lg px-8 py-6">
