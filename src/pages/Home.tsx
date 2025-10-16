@@ -4,28 +4,21 @@ import { Music, Users, Calendar } from "lucide-react";
 import heroImage from "@/assets/hero-image.png";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
 const Home = () => {
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Header />
       
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url(${heroImage})`,
-          }}
-        />
+        <div className="absolute inset-0 bg-cover bg-center" style={{
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url(${heroImage})`
+      }} />
         
         <div className="container mx-auto px-4 relative z-10 text-center">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
             🎶 <span className="text-primary">M7</span> Produções Artísticas
           </h1>
-          <p className="text-xl md:text-2xl text-foreground/90 mb-8 max-w-3xl mx-auto">
-            Levamos música, arte e fé aos palcos do Brasil.
-          </p>
+          <p className="text-xl md:text-2xl text-foreground/90 mb-8 max-w-3xl mx-auto">Levamos música e arte aos palcos do Brasil.</p>
           <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
             Apresentamos um elenco com artistas de expressão nacional, prontos para eventos, festivais e programações culturais.
           </p>
@@ -90,11 +83,7 @@ const Home = () => {
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <a
-                href="https://wa.me/5562999999999?text=Olá,%20gostaria%20de%20informações%20sobre%20shows%20da%20M7%20Produções"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="https://wa.me/5562999999999?text=Olá,%20gostaria%20de%20informações%20sobre%20shows%20da%20M7%20Produções" target="_blank" rel="noopener noreferrer">
                 💬 Falar Agora
               </a>
             </Button>
@@ -103,8 +92,6 @@ const Home = () => {
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Home;
