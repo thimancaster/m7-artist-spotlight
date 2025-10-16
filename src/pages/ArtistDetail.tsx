@@ -22,8 +22,8 @@ const ArtistDetail = () => {
     );
   }
 
-  const whatsappMessage = `Olá, gostaria de informações sobre o show de ${artist.name} para o meu evento.`;
-  const whatsappUrl = `https://wa.me/5562999999999?text=${encodeURIComponent(whatsappMessage)}`;
+  const whatsappMessage = `Olá, vim através da negociação com Thiago Ferreira, e gostaria de informações sobre o show de ${artist.name} para o evento em [CIDADE/DATA].`;
+  const whatsappUrl = `https://wa.me/5562981548834?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
     <div className="min-h-screen bg-background">
@@ -61,19 +61,61 @@ const ArtistDetail = () => {
                 </p>
               </div>
 
-              {/* Social Media */}
+              {/* Featured Video */}
+              {artist.featuredVideoUrl && (
+                <div className="mb-8">
+                  <h3 className="text-xl font-bold mb-4">🎥 Vídeo Destaque</h3>
+                  <div className="aspect-video rounded-xl overflow-hidden">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src={artist.featuredVideoUrl.replace('watch?v=', 'embed/')}
+                      title={`${artist.name} - Vídeo Destaque`}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                </div>
+              )}
+
+              {/* Streaming Platforms */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4">🔗 Redes Sociais</h3>
+                <h3 className="text-xl font-bold mb-4">🎵 Ouça nas Plataformas</h3>
                 <div className="flex flex-wrap gap-3">
-                  {artist.socialMedia.instagram && (
+                  {artist.socialMedia.spotify && (
                     <Button asChild variant="outline" size="lg">
                       <a
-                        href={artist.socialMedia.instagram}
+                        href={artist.socialMedia.spotify}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <Instagram className="mr-2" size={20} />
-                        Instagram
+                        <Music2 className="mr-2" size={20} />
+                        Spotify
+                      </a>
+                    </Button>
+                  )}
+                  {artist.socialMedia.appleMusic && (
+                    <Button asChild variant="outline" size="lg">
+                      <a
+                        href={artist.socialMedia.appleMusic}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Music2 className="mr-2" size={20} />
+                        Apple Music
+                      </a>
+                    </Button>
+                  )}
+                  {artist.socialMedia.deezer && (
+                    <Button asChild variant="outline" size="lg">
+                      <a
+                        href={artist.socialMedia.deezer}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Music2 className="mr-2" size={20} />
+                        Deezer
                       </a>
                     </Button>
                   )}
@@ -89,15 +131,22 @@ const ArtistDetail = () => {
                       </a>
                     </Button>
                   )}
-                  {artist.socialMedia.spotify && (
+                </div>
+              </div>
+
+              {/* Social Media */}
+              <div className="mb-8">
+                <h3 className="text-xl font-bold mb-4">🔗 Redes Sociais</h3>
+                <div className="flex flex-wrap gap-3">
+                  {artist.socialMedia.instagram && (
                     <Button asChild variant="outline" size="lg">
                       <a
-                        href={artist.socialMedia.spotify}
+                        href={artist.socialMedia.instagram}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <Music2 className="mr-2" size={20} />
-                        Spotify
+                        <Instagram className="mr-2" size={20} />
+                        Instagram
                       </a>
                     </Button>
                   )}
