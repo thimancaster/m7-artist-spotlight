@@ -10,6 +10,8 @@ export interface Artist {
     spotify?: string;
     appleMusic?: string;
     deezer?: string;
+    facebook?: string;
+    tiktok?: string;
   };
   featuredVideoUrl?: string;
 }
@@ -19,7 +21,7 @@ export const artists: Artist[] = [
     id: "julliany-souza",
     name: "Julliany Souza",
     genre: "Adoração e Pop Cristão",
-    bio: "Julliany Souza é uma das principais cantoras e compositoras da música cristã no Brasil. Com uma voz expressiva, consolidou sua carreira como representante da música gospel nacional e internacional.",
+    bio: "Siga no Instagram: @JullianySouza",
     image: "https://yt3.googleusercontent.com/AWQcmMIXDo3NZbANwfp0lvnCuNHbhw_riLdVkSs_fn1hz3Q8-DagO6NU9kb4ngyQGiSrPgPwqQ=s900-c-k-c0x00ffffff-no-rj",
     socialMedia: {
       instagram: "https://www.instagram.com/jullianysouza",
@@ -39,11 +41,12 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/jhonaserra",
       youtube: "https://www.youtube.com/@JhonasSerra",
-      spotify: "https://open.spotify.com/intl-pt/artist/0WsTM0BMHTqJM5M7EGX4EH",
+      spotify: "open.spotify.com/artist/0WsTM0BMHTqJM5M7EGX4EH?si=qNCPmMQ2RvORUuTOyk_UXg",
       appleMusic: "https://music.youtube.com/channel/UC3kB5FrWpviNddwXFJ720KQ",
-      deezer: "https://www.deezer.com/br/artist/11163478"
+      deezer: "https://www.deezer.com/br/artist/11163478",
+      facebook: "https://facebook.com/jhonas.serra/?ref=bookmarks"
     },
-    featuredVideoUrl: "https://www.youtube.com/watch?v=bmAwpcTyKyo"
+    featuredVideoUrl: "https://www.youtube.com/watch?v=2f38h32R_2s"
   },
   {
     id: "theo-rubia",
@@ -54,11 +57,13 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/theorubia",
       youtube: "https://www.youtube.com/@theorubia",
-      spotify: "https://open.spotify.com/intl-pt/artist/3bTnUXCo3suJiLVb79pExe",
+      spotify: "open.spotify.com/artist/3bTnUXCo3suJiLVb79pExe?si=FrbCSOy0SVSWMetcGZOdSg",
       appleMusic: "https://itunes.apple.com/br/artist/theo-rubia/885884265",
-      deezer: "https://www.deezer.com/artist/5916639?utm_source=deezer&utm_content=artist-5916639&utm_term=2455184068_1549297455&utm_medium=web"
+      deezer: "https://www.deezer.com/artist/5916639?utm_source=deezer&utm_content=artist-5916639&utm_term=2455184068_1549297455&utm_medium=web",
+      facebook: "https://facebook.com/theorubiaoficial",
+      tiktok: "https://tiktok.com/@theorubia"
     },
-    featuredVideoUrl: "https://www.youtube.com/watch?v=n0fDvJAyrQ8"
+    featuredVideoUrl: "https://www.youtube.com/watch?v=uUaDScX0PRE"
   },
   {
     id: "karem-cardim",
@@ -69,9 +74,7 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/karemcardim",
       youtube: "https://www.youtube.com/@KaremCardim",
-      spotify: "https://open.spotify.com/artist/6e1hS3a64k2AKn1gupq0yQ",
-      appleMusic: "https://music.apple.com/br/artist/karem-cardim/1531885455",
-      deezer: "https://www.deezer.com/br/artist/107873432"
+      tiktok: "https://tiktok.com/@karemcardim?is_from_webapp=1&sender_device=pc"
     },
     featuredVideoUrl: "https://www.youtube.com/watch?v=kI4D9wVPbOs"
   },
@@ -84,9 +87,11 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/gabrielljr",
       youtube: "https://www.youtube.com/@GabriellJunior",
-      spotify: "https://open.spotify.com/intl-pt/artist/7MLz6FXaGXB3yfjb0baqDH",
+      spotify: "open.spotify.com/artist/7MLz6FXaGXB3yfjb0baqDH",
       appleMusic: "https://apple.co/3t465zT",
-      deezer: "https://www.deezer.com/sv/artist/12200182"
+      deezer: "https://www.deezer.com/sv/artist/12200182",
+      facebook: "https://facebook.com/gabrielljunioroficial/?fref=ts",
+      tiktok: "https://tiktok.com/@gabrielljunior"
     },
     featuredVideoUrl: "https://www.youtube.com/watch?v=F0f-1j9c_gA"
   },
@@ -144,9 +149,10 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/felipevilela5pl",
       youtube: "https://www.youtube.com/@felipevilela5pl",
-      spotify: "https://open.spotify.com/intl-pt/artist/7oDJQjouTE3FiFv2TXUxPp",
+      spotify: "open.spotify.com/artist/7oDJQjouTE3FiFv2TXUxPp?si=59HxqXaITbOdwzbLQGqz2w",
       appleMusic: "https://music.apple.com/br/artist/felipe-vilela/986683000",
-      deezer: "https://www.deezer.com/us/artist/7833916"
+      deezer: "https://www.deezer.com/us/artist/7833916",
+      facebook: "https://facebook.com/felipevilela5pl"
     },
     featuredVideoUrl: "https://www.youtube.com/watch?v=9g2z1Sp72_g"
   },
@@ -159,7 +165,7 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/victin",
       youtube: "https://www.youtube.com/@VICTIN__",
-      spotify: "https://open.spotify.com/intl-pt/artist/3brCnZDTt5fHf0BBXvPa6p",
+      spotify: "open.spotify.com/artist/3brCnZDTt5fHf0BBXvPa6p",
       appleMusic: "https://music.apple.com/br/artist/victin/1521190544",
       deezer: "https://www.deezer.com/br/artist/98606442"
     },
@@ -174,9 +180,10 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/priscilaolly/?hl=pt",
       youtube: "https://www.youtube.com/@priscilaollly",
-      spotify: "https://open.spotify.com/intl-pt/artist/5hK2DFyP32D2bS9oQzbwzy",
+      spotify: "open.spotify.com/intl-pt/artist/5hK2DFyP32D2bS9oQzbwzy",
       appleMusic: "https://music.apple.com/br/artist/priscila-olly/1647463991",
-      deezer: "https://www.deezer.com/br/artist/185799307"
+      deezer: "https://www.deezer.com/br/artist/185799307",
+      tiktok: "https://tiktok.com/@priscilaollly"
     },
     featuredVideoUrl: "https://www.youtube.com/watch?v=G_Mbf4oYc8I"
   },
@@ -189,7 +196,7 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/carolbragabr",
       youtube: "https://www.youtube.com/@CarolBraga",
-      spotify: "https://open.spotify.com/intl-pt/artist/62tR4thbBmrAuprUoUVgGA",
+      spotify: "open.spotify.com/intl-pt/artist/62tR4thbBmrAuprUoUVgGA?si=2qZj2NGpS7yhQF3US7xD-w",
       appleMusic: "https://music.apple.com/br/artist/carol-braga/1465992302",
       deezer: "https://deezer.page.link/J9cZkMcMxC1jaGvH8"
     },
@@ -199,12 +206,40 @@ export const artists: Artist[] = [
     id: "joao-antonio",
     name: "João Antônio",
     genre: "Pregador e Escritor",
-    bio: "João Antônio, pregador e escritor, autor de mais de 4 livros e coautor de mais de 12 títulos. É teólogo formado pela faculdade Teológica Sul Americana e membro da Family Church em Goiânia-GO, liderada pelo pastor Mac Anderson. Atualmente com 22 anos, João iniciou seu ministério aos 13 anos, em uma cidade do interior do estado de Goiás, onde teve seu primeiro contato com o púlpito. Nesse tempo, João também liderou jovens e grupos de evangelismo. Atualmente sua redes sociais alcançam mais de 800 mil pessoas por mês. Seus conteúdos têm atingido um grande público, utilizando uma linguagem totalmente bíblica e prática.",
+    bio: "João Antônio Martins começou a pregar aos 13 anos de idade e, desde então, tem dedicado sua vida ao ensino da Palavra. Hoje, é mestrando em Teologia pela FABAPAR, autor de 18 livros e editor da Manna Editora.",
     image: "https://yt3.googleusercontent.com/xfLvE9HaEaYwWLKpgGN42N1-Juo0wgznR3PR0fDfkMS93s0fyoiD2tKYc_DXpKn88GLSbZy9QA=s900-c-k-c0x00ffffff-no-rj",
     socialMedia: {
       instagram: "https://www.instagram.com/joaoantoniomartins_?igsh=MTZ4Zmoxa3F3Y2FleA==&utm_source=qr",
       youtube: "https://www.youtube.com/@joaoantoniomartinss"
     },
     featuredVideoUrl: "https://www.youtube.com/watch?v=8c_aFmXb_0s"
+  },
+  {
+    id: "salomao-do-reggae",
+    name: "Salomão do Reggae",
+    genre: "Reggae Gospel",
+    bio: "Cantor e compositor - Salomão do Reggae",
+    image: "https://yt3.googleusercontent.com/jUQ2TBsQHRkKQZ2umCKGa-tKqITWfR5rYlK5c9VmPrVek7xrv6VVF1IYEO0hokOiiZ3g7ZW9Mw=s900-c-k-c0x00ffffff-no-rj",
+    socialMedia: {
+      instagram: "https://instagram.com/salomaodoreggae",
+      facebook: "https://facebook.com/SalomaodoReggae",
+      spotify: "open.spotify.com/artist/7yIo15qboa9gHCtqK7cOLx",
+      deezer: "https://www.deezer.com/br/artist/7935342",
+      appleMusic: "https://itunes.apple.com/us/artist/salomão/468927434",
+      youtube: "https://www.youtube.com/@SALOMAODOREGGAE"
+    },
+    featuredVideoUrl: ""
+  },
+  {
+    id: "thiago-godoi",
+    name: "Thiago Godoi",
+    genre: "Louvor e Adoração",
+    bio: "@thiagogodoii",
+    image: "https://yt3.googleusercontent.com/nvgJPOdHiRiIi2anQv5nZCE9Uwq_xsEMVqtVeZSoRUlxD5xFPUJdOqlTCcs_OP0fh8gkZvbfRA=s160-c-k-c0x00ffffff-no-rj",
+    socialMedia: {
+      instagram: "https://www.instagram.com/thiagogodoii",
+      youtube: "https://www.youtube.com/@thiagogodoioficialbr"
+    },
+    featuredVideoUrl: ""
   }
 ];
