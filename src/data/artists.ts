@@ -8,6 +8,8 @@ export interface Artist {
     instagram?: string;
     youtube?: string;
     spotify?: string;
+    appleMusic?: string;
+    deezer?: string;
   };
   featuredVideoUrl?: string;
 }
@@ -132,10 +134,7 @@ export const artists: Artist[] = [
     name: "Victin",
     genre: "Rap / Poesia Cristã",
     bio: "Victin mescla rap e poesia cristã, trazendo mensagens profundas de fé. Com estilo único, tem conquistado espaço no rap gospel brasileiro, falando diretamente com a juventude.",
-    image: "
-
-http://googleusercontent.com/image_collection/image_retrieval/7500056956931783368_0
-",
+    image: "http://googleusercontent.com/image_collection/image_retrieval/7500056956931783368_0",
     socialMedia: {
       instagram: "https://instagram.com/victinoficial",
       youtube: "https://youtube.com/@victinoficial"

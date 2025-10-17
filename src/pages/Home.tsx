@@ -5,6 +5,8 @@ import heroImage from "@/assets/hero-image.png";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 const Home = () => {
+  const whatsappUrl = "https://wa.me/5562981548834?text=Olá,+vim+através+da+negociação+com+Thiago+Ferreira,+e+gostaria+de+informações+sobre+shows+da+M7+Produções";
+  
   return <div className="min-h-screen bg-background">
       <Header />
       
@@ -83,7 +85,7 @@ const Home = () => {
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <a href="https://wa.me/5562999999999?text=Olá,%20gostaria%20de%20informações%20sobre%20shows%20da%20M7%20Produções" target="_blank" rel="noopener noreferrer">
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
                 💬 Falar Agora
               </a>
             </Button>
