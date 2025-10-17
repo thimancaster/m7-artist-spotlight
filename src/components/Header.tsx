@@ -12,7 +12,7 @@ const Header = () => {
           <Link to="/" className="flex items-center space-x-2">
             <div className="text-2xl md:text-3xl font-bold">
               <span className="text-primary">M7</span>
-              <span className="text-foreground"> Produções</span>
+              <span className="text-lime-50 text-base"> Produções</span>
             </div>
           </Link>
 
