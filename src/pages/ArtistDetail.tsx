@@ -95,30 +95,6 @@ const ArtistDetail = () => {
                       </a>
                     </Button>
                   )}
-                  {artist.socialMedia.appleMusic && (
-                    <Button asChild variant="outline" size="lg">
-                      <a
-                        href={artist.socialMedia.appleMusic}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Music2 className="mr-2" size={20} />
-                        Apple Music
-                      </a>
-                    </Button>
-                  )}
-                  {artist.socialMedia.deezer && (
-                    <Button asChild variant="outline" size="lg">
-                      <a
-                        href={artist.socialMedia.deezer}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Music2 className="mr-2" size={20} />
-                        Deezer
-                      </a>
-                    </Button>
-                  )}
                   {artist.socialMedia.youtube && (
                     <Button asChild variant="outline" size="lg">
                       <a
