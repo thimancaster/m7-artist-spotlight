@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 const Home = () => {
   const whatsappUrl = "https://wa.me/5562981548834?text=Olá,+vim+através+da+negociação+com+Thiago+Ferreira,+e+gostaria+de+informações+sobre+shows+da+M7+Produções";
   return <div className="min-h-screen bg-background">
-      <Header className="bg-[#000a00]/0 mx-[29px] my-[24px] px-[7px] py-0 rounded-3xl" />
+      <Header className="bg-[#000a00]/0 my-[24px] px-[7px] py-0 mx-[40px] rounded-3xl" />
       
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
