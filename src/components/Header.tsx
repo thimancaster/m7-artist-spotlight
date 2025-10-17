@@ -6,7 +6,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
-  return <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+  return <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 shadow-lg shadow-black/5">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20 rounded-lg bg-transparent">
           <Link to="/" className="flex items-center space-x-2">
@@ -28,7 +28,7 @@ const Header = () => {
               Contato
             </Link>
             <Button asChild variant="default" size="sm">
-              <a href="https://wa.me/5562999999999?text=Olá,%20gostaria%20de%20informações%20sobre%20shows%20da%20M7%20Produções" target="_blank" rel="noopener noreferrer">
+              <a href="https://wa.me/5562981548834?text=Olá,+vim+através+da+negociação+com+Thiago+Ferreira,+e+gostaria+de+informações+sobre+shows+da+M7+Produções" target="_blank" rel="noopener noreferrer">
                 Falar no WhatsApp
               </a>
             </Button>
@@ -52,7 +52,7 @@ const Header = () => {
               Contato
             </Link>
             <Button asChild variant="default" size="sm" className="w-full">
-              <a href="https://wa.me/5562999999999?text=Olá,%20gostaria%20de%20informações%20sobre%20shows%20da%20M7%20Produções" target="_blank" rel="noopener noreferrer">
+              <a href="https://wa.me/5562981548834?text=Olá,+vim+através+da+negociação+com+Thiago+Ferreira,+e+gostaria+de+informações+sobre+shows+da+M7+Produções" target="_blank" rel="noopener noreferrer">
                 Falar no WhatsApp
               </a>
             </Button>

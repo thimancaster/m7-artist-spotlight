@@ -5,6 +5,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const Contact = () => {
+  const whatsappUrl = "https://wa.me/5562981548834?text=Olá,+vim+através+da+negociação+com+Thiago+Ferreira,+e+gostaria+de+informações+sobre+shows+da+M7+Produções";
+  
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -34,7 +36,7 @@ const Contact = () => {
                     <p className="text-muted-foreground mb-3">(62) 98154-8834</p>
                     <Button asChild size="sm">
                       <a
-                        href="https://wa.me/5562981548834?text=Olá,%20vim%20através%20da%20negociação%20com%20Thiago%20Ferreira,%20e%20gostaria%20de%20informações%20sobre%20shows%20da%20M7%20Produções"
+                        href={whatsappUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -123,7 +125,7 @@ const Contact = () => {
               </p>
               <Button asChild size="lg" className="text-lg px-8">
                 <a
-                  href="https://wa.me/5562981548834?text=Olá,%20vim%20através%20da%20negociação%20com%20Thiago%20Ferreira,%20e%20gostaria%20de%20informações%20sobre%20shows%20da%20M7%20Produções"
+                  href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
