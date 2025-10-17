@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Instagram, Youtube, Music2, ArrowLeft } from "lucide-react";
+import { Instagram, Youtube, Music2, ArrowLeft, Disc, MicVocal, Facebook, Link as LinkIcon } from "lucide-react";
 import { artists } from "@/data/artists";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -22,7 +22,7 @@ const ArtistDetail = () => {
     );
   }
 
-  const whatsappMessage = `Olá, vim através da negociação com Thiago Ferreira, e gostaria de informações sobre o show de ${artist.name} para o evento em [CIDADE/DATA].`;
+  const whatsappMessage = `Olá, gostaria de informações sobre o show de ${artist.name} para o meu evento.`;
   const whatsappUrl = `https://wa.me/5562981548834?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
@@ -39,8 +39,21 @@ const ArtistDetail = () => {
           </Button>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            {/* Artist Image */}
+            {/* Artist Media */}
             <div className="relative">
+              <div className="aspect-video rounded-2xl overflow-hidden bg-muted border-2 border-border mb-4">
+                {artist.featuredVideoUrl && (
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={artist.featuredVideoUrl.replace("watch?v=", "embed/")}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                )}
+              </div>
               <div className="aspect-square rounded-2xl overflow-hidden bg-muted border-2 border-border">
                 <img
                   src={artist.image}
@@ -61,37 +74,19 @@ const ArtistDetail = () => {
                 </p>
               </div>
 
-              {/* Featured Video */}
-              {artist.featuredVideoUrl && (
-                <div className="mb-8">
-                  <h3 className="text-xl font-bold mb-4">🎥 Vídeo Destaque</h3>
-                  <div className="aspect-video rounded-xl overflow-hidden">
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      src={artist.featuredVideoUrl.replace('watch?v=', 'embed/')}
-                      title={`${artist.name} - Vídeo Destaque`}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-                </div>
-              )}
-
-              {/* Streaming Platforms */}
+              {/* Social Media */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4">🎵 Ouça nas Plataformas</h3>
+                <h3 className="text-xl font-bold mb-4">🔗 Redes Sociais</h3>
                 <div className="flex flex-wrap gap-3">
-                  {artist.socialMedia.spotify && (
+                  {artist.socialMedia.instagram && (
                     <Button asChild variant="outline" size="lg">
                       <a
-                        href={artist.socialMedia.spotify}
+                        href={artist.socialMedia.instagram}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <Music2 className="mr-2" size={20} />
-                        Spotify
+                        <Instagram className="mr-2" size={20} />
+                        Instagram
                       </a>
                     </Button>
                   )}
@@ -107,22 +102,63 @@ const ArtistDetail = () => {
                       </a>
                     </Button>
                   )}
-                </div>
-              </div>
-
-              {/* Social Media */}
-              <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4">🔗 Redes Sociais</h3>
-                <div className="flex flex-wrap gap-3">
-                  {artist.socialMedia.instagram && (
+                  {artist.socialMedia.spotify && (
                     <Button asChild variant="outline" size="lg">
                       <a
-                        href={artist.socialMedia.instagram}
+                        href={artist.socialMedia.spotify}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <Instagram className="mr-2" size={20} />
-                        Instagram
+                        <Music2 className="mr-2" size={20} />
+                        Spotify
+                      </a>
+                    </Button>
+                  )}
+                  {artist.socialMedia.appleMusic && (
+                    <Button asChild variant="outline" size="lg">
+                      <a
+                        href={artist.socialMedia.appleMusic}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <MicVocal className="mr-2" size={20} />
+                        Apple Music
+                      </a>
+                    </Button>
+                  )}
+                  {artist.socialMedia.deezer && (
+                    <Button asChild variant="outline" size="lg">
+                      <a
+                        href={artist.socialMedia.deezer}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Disc className="mr-2" size={20} />
+                        Deezer
+                      </a>
+                    </Button>
+                  )}
+                   {artist.socialMedia.facebook && (
+                    <Button asChild variant="outline" size="lg">
+                      <a
+                        href={artist.socialMedia.facebook}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Facebook className="mr-2" size={20} />
+                        Facebook
+                      </a>
+                    </Button>
+                  )}
+                  {artist.socialMedia.tiktok && (
+                    <Button asChild variant="outline" size="lg">
+                      <a
+                        href={artist.socialMedia.tiktok}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <LinkIcon className="mr-2" size={20} />
+                        TikTok
                       </a>
                     </Button>
                   )}
