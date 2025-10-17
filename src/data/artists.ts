@@ -39,11 +39,11 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/jhonaserra",
       youtube: "https://www.youtube.com/@JhonasSerra",
-      spotify: "open.spotify.com/artist/0WsTM0BMHTqJM5M7EGX4EH?si=qNCPmMQ2RvORUuTOyk_UXg",
+      spotify: "https://open.spotify.com/intl-pt/artist/0WsTM0BMHTqJM5M7EGX4EH",
       appleMusic: "https://music.youtube.com/channel/UC3kB5FrWpviNddwXFJ720KQ",
       deezer: "https://www.deezer.com/br/artist/11163478"
     },
-    featuredVideoUrl: "https://www.youtube.com/watch?v=2f38h32R_2s"
+    featuredVideoUrl: "https://www.youtube.com/watch?v=bmAwpcTyKyo"
   },
   {
     id: "theo-rubia",
@@ -54,11 +54,11 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/theorubia",
       youtube: "https://www.youtube.com/@theorubia",
-      spotify: "open.spotify.com/artist/3bTnUXCo3suJiLVb79pExe?si=FrbCSOy0SVSWMetcGZOdSg",
+      spotify: "https://open.spotify.com/intl-pt/artist/3bTnUXCo3suJiLVb79pExe",
       appleMusic: "https://itunes.apple.com/br/artist/theo-rubia/885884265",
       deezer: "https://www.deezer.com/artist/5916639?utm_source=deezer&utm_content=artist-5916639&utm_term=2455184068_1549297455&utm_medium=web"
     },
-    featuredVideoUrl: "https://www.youtube.com/watch?v=uUaDScX0PRE"
+    featuredVideoUrl: "https://www.youtube.com/watch?v=n0fDvJAyrQ8"
   },
   {
     id: "karem-cardim",
@@ -84,7 +84,7 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/gabrielljr",
       youtube: "https://www.youtube.com/@GabriellJunior",
-      spotify: "open.spotify.com/artist/7MLz6FXaGXB3yfjb0baqDH",
+      spotify: "https://open.spotify.com/intl-pt/artist/7MLz6FXaGXB3yfjb0baqDH",
       appleMusic: "https://apple.co/3t465zT",
       deezer: "https://www.deezer.com/sv/artist/12200182"
     },
@@ -144,7 +144,7 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/felipevilela5pl",
       youtube: "https://www.youtube.com/@felipevilela5pl",
-      spotify: "open.spotify.com/artist/7oDJQjouTE3FiFv2TXUxPp?si=59HxqXaITbOdwzbLQGqz2w",
+      spotify: "https://open.spotify.com/intl-pt/artist/7oDJQjouTE3FiFv2TXUxPp",
       appleMusic: "https://music.apple.com/br/artist/felipe-vilela/986683000",
       deezer: "https://www.deezer.com/us/artist/7833916"
     },
@@ -159,7 +159,7 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/victin",
       youtube: "https://www.youtube.com/@VICTIN__",
-      spotify: "open.spotify.com/artist/3brCnZDTt5fHf0BBXvPa6p",
+      spotify: "https://open.spotify.com/intl-pt/artist/3brCnZDTt5fHf0BBXvPa6p",
       appleMusic: "https://music.apple.com/br/artist/victin/1521190544",
       deezer: "https://www.deezer.com/br/artist/98606442"
     },
@@ -174,7 +174,7 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/priscilaolly/?hl=pt",
       youtube: "https://www.youtube.com/@priscilaollly",
-      spotify: "open.spotify.com/intl-pt/artist/5hK2DFyP32D2bS9oQzbwzy",
+      spotify: "https://open.spotify.com/intl-pt/artist/5hK2DFyP32D2bS9oQzbwzy",
       appleMusic: "https://music.apple.com/br/artist/priscila-olly/1647463991",
       deezer: "https://www.deezer.com/br/artist/185799307"
     },
@@ -189,7 +189,7 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/carolbragabr",
       youtube: "https://www.youtube.com/@CarolBraga",
-      spotify: "open.spotify.com/intl-pt/artist/62tR4thbBmrAuprUoUVgGA?si=2qZj2NGpS7yhQF3US7xD-w",
+      spotify: "https://open.spotify.com/intl-pt/artist/62tR4thbBmrAuprUoUVgGA",
       appleMusic: "https://music.apple.com/br/artist/carol-braga/1465992302",
       deezer: "https://deezer.page.link/J9cZkMcMxC1jaGvH8"
     },
