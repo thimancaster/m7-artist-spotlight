@@ -8,7 +8,7 @@ const Header = () => {
   const isActive = (path: string) => location.pathname === path;
   return <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 rounded-full bg-transparent">
-        <div className="flex items-center justify-between h-16 md:h-20 rounded-lg bg-transparent">
+        <div className="flex items-center justify-between h-16 md:h-20 bg-transparent rounded-full">
           <Link to="/" className="flex items-center space-x-2">
             <div className="text-2xl md:text-3xl font-bold">
               <span className="text-primary">M7</span>
