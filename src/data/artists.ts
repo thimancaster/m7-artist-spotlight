@@ -26,9 +26,9 @@ export const artists: Artist[] = [
     socialMedia: {
       instagram: "https://www.instagram.com/jullianysouza",
       youtube: "https://www.youtube.com/@JullianySouza",
-      spotify: "https://open.spotify.com/artist/111v5kC022h042A48n4JHA",
-      appleMusic: "https://music.apple.com/br/artist/julliany-souza/1541296225",
-      deezer: "https://www.deezer.com/br/artist/113247072"
+      spotify: "https://open.spotify.com/intl-pt/artist/0d71FlLkqZzdpEQifcngQq",
+      appleMusic: "https://music.apple.com/br/artist/julliany-souza/1045261065",
+      deezer: "https://www.deezer.com/br/artist/8981214"
     },
     featuredVideoUrl: "https://www.youtube.com/watch?v=xcC3Xh3PFcE"
   },
