@@ -52,7 +52,7 @@ export const artists: Artist[] = [
     id: "theo-rubia",
     name: "Theo Rubia",
     genre: "Worship e Adoração",
-    bio: "Theo é cantor, pastor e compositor de grandes hits de sucesso do mercado gospel brasileiro. Entre eles estão as músicas 'Pode Morar Aqui', 'Eu Só Quero Tua Presença' e 'Um Milhão de Anos'.",
+    bio: "Theo Rubia é um jovem cantor e pastor nascido em Rancharia/SP no ano de 1990. Filho e neto de pastor, se apaixonou pela música ainda quando criança quando sua mãe o levava para os ensaios do ministério de louvor. Desde pequeno sempre esteve envolvido com a igreja, já com 9 anos de idade entrou para o ministério de louvor da igreja e buscando aprender tudo que podia sobre música, estudando vários instrumentos.Nascido em berço evangélico, teve de uma forte experiência com Deus que foi fundamental no direcionamento de seu ministério. Hoje, ministra em igrejas/eventos em diversas cidades do Brasil e é compositor de músicas que tem tocado em muitas igrejas em todo o Brasil e também em outros países como: “Pode Morar Aqui” e “Eu Só Quero Tua Presença”.",
     image: "https://yt3.googleusercontent.com/3DIIBhph7dL_uyao6jJlUwa4a4GJ4AIlpB8UelDTKC8xfFFslUr5T34A7DgQWFH7RFSn7dPo=s900-c-k-c0x00ffffff-no-rj",
     socialMedia: {
       instagram: "https://www.instagram.com/theorubia",
