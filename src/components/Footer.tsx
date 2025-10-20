@@ -1,8 +1,6 @@
 import { Instagram, Youtube, Mail } from "lucide-react";
-
 const Footer = () => {
-  return (
-    <footer className="bg-card border-t border-border py-12">
+  return <footer className="bg-card border-t border-border py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
@@ -19,7 +17,7 @@ const Footer = () => {
             <h4 className="font-semibold mb-4 text-foreground">Contato</h4>
             <div className="space-y-2 text-muted-foreground">
               <p>📧 contato@m7producoes.com.br</p>
-              <p>📱 WhatsApp: (62) 99999-9999</p>
+              <p>📱 WhatsApp: (62) 98154-8834</p>
               <p>🌐 m7producoes.com.br</p>
             </div>
           </div>
@@ -27,29 +25,13 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4 text-foreground">Redes Sociais</h4>
             <div className="flex space-x-4">
-              <a
-                href="https://instagram.com/m7producoes"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 bg-muted rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
-                aria-label="Instagram"
-              >
+              <a href="https://instagram.com/m7producoes" target="_blank" rel="noopener noreferrer" className="p-2 bg-muted rounded-full hover:bg-primary hover:text-primary-foreground transition-colors" aria-label="Instagram">
                 <Instagram size={20} />
               </a>
-              <a
-                href="https://youtube.com/@m7producoes"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 bg-muted rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
-                aria-label="YouTube"
-              >
+              <a href="https://youtube.com/@m7producoes" target="_blank" rel="noopener noreferrer" className="p-2 bg-muted rounded-full hover:bg-primary hover:text-primary-foreground transition-colors" aria-label="YouTube">
                 <Youtube size={20} />
               </a>
-              <a
-                href="mailto:contato@m7producoes.com.br"
-                className="p-2 bg-muted rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
-                aria-label="Email"
-              >
+              <a href="mailto:contato@m7producoes.com.br" className="p-2 bg-muted rounded-full hover:bg-primary hover:text-primary-foreground transition-colors" aria-label="Email">
                 <Mail size={20} />
               </a>
             </div>
@@ -60,8 +42,6 @@ const Footer = () => {
           <p>© 2025 M7 Produções Artísticas. Todos os direitos reservados.</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
