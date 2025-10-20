@@ -46,7 +46,7 @@ export const artists: Artist[] = [
       deezer: "https://www.deezer.com/br/artist/11163478",
       facebook: "https://facebook.com/jhonas.serra/?ref=bookmarks"
     },
-    featuredVideoUrl: "https://www.youtube.com/watch?v=2f38h32R_2s"
+    featuredVideoUrl: "https://www.youtube.com/watch?v=bmAwpcTyKyo"
   },
   {
     id: "theo-rubia",
@@ -68,7 +68,7 @@ export const artists: Artist[] = [
   {
     id: "karem-cardim",
     name: "Karem Cardim",
-    genre: "Louvor e Pop Gospel",
+    genre: "Pregadora",
     bio: "A Missionária Karem Cardim leva o amor de Deus através de sua delicadeza. Seu ministério tem se destacado no Brasil com mensagens fundamentadas nas escrituras e vídeos que ultrapassam 500 mil visualizações no YouTube.",
     image: "https://yt3.googleusercontent.com/-bUSOutpa1_KAMBrnlAOUt4LcDrgaL3wI-ele52Pnn47YiVns_HoIHdTy1cQ6jIzzlsG8fA4=s900-c-k-c0x00ffffff-no-rj",
     socialMedia: {
@@ -76,7 +76,7 @@ export const artists: Artist[] = [
       youtube: "https://www.youtube.com/@KaremCardim",
       tiktok: "https://tiktok.com/@karemcardim?is_from_webapp=1&sender_device=pc"
     },
-    featuredVideoUrl: "https://www.youtube.com/watch?v=kI4D9wVPbOs"
+    featuredVideoUrl: "https://www.youtube.com/watch?v=ps1x1NfeZL0"
   },
   {
     id: "gabriell-junior",
@@ -93,7 +93,7 @@ export const artists: Artist[] = [
       facebook: "https://facebook.com/gabrielljunioroficial/?fref=ts",
       tiktok: "https://tiktok.com/@gabrielljunior"
     },
-    featuredVideoUrl: "https://www.youtube.com/watch?v=F0f-1j9c_gA"
+    featuredVideoUrl: "https://www.youtube.com/watch?v=_1CGYEaNlDw"
   },
   {
     id: "danilo-neves",
@@ -123,7 +123,7 @@ export const artists: Artist[] = [
       appleMusic: "https://music.apple.com/br/artist/ton-molinari/1544490812",
       deezer: "https://www.deezer.com/br/artist/117363402"
     },
-    featuredVideoUrl: "https://www.youtube.com/watch?v=1Z-Z1Z1Z1Z1"
+    featuredVideoUrl: "https://www.youtube.com/watch?v=3vBmZ2dechE"
   },
   {
     id: "gabriela-gomes",
@@ -138,7 +138,7 @@ export const artists: Artist[] = [
       appleMusic: "https://music.apple.com/br/artist/gabriela-gomes/991754983",
       deezer: "https://www.deezer.com/br/artist/6009928"
     },
-    featuredVideoUrl: "https://www.youtube.com/watch?v=LZflt_pD3wE"
+    featuredVideoUrl: "https://www.youtube.com/watch?v=1i1673ILdVI"
   },
   {
     id: "felipe-vilela",
@@ -169,7 +169,7 @@ export const artists: Artist[] = [
       appleMusic: "https://music.apple.com/br/artist/victin/1521190544",
       deezer: "https://www.deezer.com/br/artist/98606442"
     },
-    featuredVideoUrl: "https://www.youtube.com/watch?v=ElbEKw-I3tM"
+    featuredVideoUrl: "https://www.youtube.com/watch?v=oi4wrGXNxtw"
   },
   {
     id: "priscila-olly",
@@ -185,7 +185,7 @@ export const artists: Artist[] = [
       deezer: "https://www.deezer.com/br/artist/185799307",
       tiktok: "https://tiktok.com/@priscilaollly"
     },
-    featuredVideoUrl: "https://www.youtube.com/watch?v=G_Mbf4oYc8I"
+    featuredVideoUrl: "https://www.youtube.com/watch?v=zF1BmF8P3yE"
   },
   {
     id: "carol-braga",
@@ -200,7 +200,7 @@ export const artists: Artist[] = [
       appleMusic: "https://music.apple.com/br/artist/carol-braga/1465992302",
       deezer: "https://deezer.page.link/J9cZkMcMxC1jaGvH8"
     },
-    featuredVideoUrl: "https://www.youtube.com/watch?v=video-id-carol-braga"
+    featuredVideoUrl: "https://www.youtube.com/watch?v=TpPRhSMQyvs"
   },
   {
     id: "joao-antonio",
@@ -212,7 +212,7 @@ export const artists: Artist[] = [
       instagram: "https://www.instagram.com/joaoantoniomartins_?igsh=MTZ4Zmoxa3F3Y2FleA==&utm_source=qr",
       youtube: "https://www.youtube.com/@joaoantoniomartinss"
     },
-    featuredVideoUrl: "https://www.youtube.com/watch?v=8c_aFmXb_0s"
+    featuredVideoUrl: "https://www.youtube.com/watch?v=SiDdszmwbrs"
   },
   {
     id: "salomao-do-reggae",
@@ -228,7 +228,7 @@ export const artists: Artist[] = [
       appleMusic: "https://itunes.apple.com/us/artist/salomão/468927434",
       youtube: "https://www.youtube.com/@SALOMAODOREGGAE"
     },
-    featuredVideoUrl: ""
+    featuredVideoUrl: "https://www.youtube.com/watch?v=gtHc6g9P07M"
   },
   {
     id: "thiago-godoi",
@@ -240,6 +240,6 @@ export const artists: Artist[] = [
       instagram: "https://www.instagram.com/thiagogodoii",
       youtube: "https://www.youtube.com/@thiagogodoioficialbr"
     },
-    featuredVideoUrl: ""
+    featuredVideoUrl: "https://www.youtube.com/watch?v=9HdqbijK6gI"
   }
 ];
