@@ -4,10 +4,12 @@ import { Instagram, Youtube, Music2, ArrowLeft, Disc, MicVocal, Facebook, Link a
 import { artists } from "@/data/artists";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useLeadTracking } from "@/hooks/useLeadTracking";
 
 const ArtistDetail = () => {
   const { id } = useParams<{ id: string }>();
   const artist = artists.find((a) => a.id === id);
+  const { trackAndRedirect } = useLeadTracking();
 
   if (!artist) {
     return (
@@ -22,7 +24,7 @@ const ArtistDetail = () => {
     );
   }
 
-  const whatsappMessage = `Olá, gostaria de informações sobre o show de ${artist.name} para o meu evento.`;
+  const whatsappMessage = `Olá, vim através da negociação com Thiago Ferreira, e gostaria de informações sobre o show de ${artist.name} para o meu evento.`;
   const whatsappUrl = `https://wa.me/5562981548834?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
@@ -173,10 +175,20 @@ const ArtistDetail = () => {
                 <p className="text-muted-foreground mb-6">
                   Entre em contato via WhatsApp e receba uma proposta personalizada para o seu evento.
                 </p>
-                <Button asChild size="lg" className="w-full text-lg">
-                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                    🟢 Solicitar Proposta de Show
-                  </a>
+                <Button 
+                  size="lg" 
+                  className="w-full text-lg"
+                  onClick={() => trackAndRedirect(
+                    { 
+                      contactType: 'whatsapp', 
+                      sourcePage: 'artist-detail',
+                      artistId: artist.id,
+                      artistName: artist.name
+                    },
+                    whatsappUrl
+                  )}
+                >
+                  🟢 Solicitar Proposta de Show
                 </Button>
               </div>
             </div>

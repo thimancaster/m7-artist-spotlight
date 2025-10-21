@@ -25,7 +25,7 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4 text-foreground">Redes Sociais</h4>
             <div className="flex space-x-4">
-              <a href="https://instagram.com/m7producoes" target="_blank" rel="noopener noreferrer" className="p-2 bg-muted rounded-full hover:bg-primary hover:text-primary-foreground transition-colors" aria-label="Instagram">
+              <a href="https://www.instagram.com/m7producoes_/" target="_blank" rel="noopener noreferrer" className="p-2 bg-muted rounded-full hover:bg-primary hover:text-primary-foreground transition-colors" aria-label="Instagram">
                 <Instagram size={20} />
               </a>
               <a href="https://youtube.com/@m7producoes" target="_blank" rel="noopener noreferrer" className="p-2 bg-muted rounded-full hover:bg-primary hover:text-primary-foreground transition-colors" aria-label="YouTube">

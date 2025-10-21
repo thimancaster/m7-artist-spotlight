@@ -2,10 +2,16 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useLeadTracking } from "@/hooks/useLeadTracking";
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { trackAndRedirect } = useLeadTracking();
   const isActive = (path: string) => location.pathname === path;
+  
+  const whatsappMessage = "Olá, vim através da negociação com Thiago Ferreira, e gostaria de informações sobre shows da M7 Produções";
+  const whatsappUrl = `https://wa.me/5562981548834?text=${encodeURIComponent(whatsappMessage)}`;
   return <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 shadow-lg shadow-black/5">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20 rounded-lg bg-transparent">
@@ -27,10 +33,15 @@ const Header = () => {
             <Link to="/contato" className={`text-sm font-medium transition-colors hover:text-primary ${isActive("/contato") ? "text-primary" : "text-foreground"}`}>
               Contato
             </Link>
-            <Button asChild variant="default" size="sm">
-              <a href="https://wa.me/5562981548834?text=Olá,+vim+através+da+negociação+com+Thiago+Ferreira,+e+gostaria+de+informações+sobre+shows+da+M7+Produções" target="_blank" rel="noopener noreferrer">
-                Falar no WhatsApp
-              </a>
+            <Button 
+              variant="default" 
+              size="sm"
+              onClick={() => trackAndRedirect(
+                { contactType: 'whatsapp', sourcePage: 'header' },
+                whatsappUrl
+              )}
+            >
+              Falar no WhatsApp
             </Button>
           </nav>
 
@@ -51,10 +62,19 @@ const Header = () => {
             <Link to="/contato" className={`block text-sm font-medium transition-colors hover:text-primary ${isActive("/contato") ? "text-primary" : "text-foreground"}`} onClick={() => setIsMenuOpen(false)}>
               Contato
             </Link>
-            <Button asChild variant="default" size="sm" className="w-full">
-              <a href="https://wa.me/5562981548834?text=Olá,+vim+através+da+negociação+com+Thiago+Ferreira,+e+gostaria+de+informações+sobre+shows+da+M7+Produções" target="_blank" rel="noopener noreferrer">
-                Falar no WhatsApp
-              </a>
+            <Button 
+              variant="default" 
+              size="sm" 
+              className="w-full"
+              onClick={() => {
+                trackAndRedirect(
+                  { contactType: 'whatsapp', sourcePage: 'header-mobile' },
+                  whatsappUrl
+                );
+                setIsMenuOpen(false);
+              }}
+            >
+              Falar no WhatsApp
             </Button>
           </nav>}
       </div>

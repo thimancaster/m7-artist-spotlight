@@ -4,8 +4,12 @@ import { Music, Users, Calendar } from "lucide-react";
 import heroImage from "@/assets/hero-image.png";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useLeadTracking } from "@/hooks/useLeadTracking";
+
 const Home = () => {
-  const whatsappUrl = "https://wa.me/5562981548834?text=Olá,+vim+através+da+negociação+com+Thiago+Ferreira,+e+gostaria+de+informações+sobre+shows+da+M7+Produções";
+  const { trackAndRedirect } = useLeadTracking();
+  const whatsappMessage = "Olá, vim através da negociação com Thiago Ferreira, e gostaria de informações sobre shows da M7 Produções";
+  const whatsappUrl = `https://wa.me/5562981548834?text=${encodeURIComponent(whatsappMessage)}`;
   
   return <div className="min-h-screen bg-background">
       <Header />
@@ -84,10 +88,15 @@ const Home = () => {
                 Conhecer Artistas
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg">
-              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                💬 Falar Agora
-              </a>
+            <Button 
+              variant="outline" 
+              size="lg"
+              onClick={() => trackAndRedirect(
+                { contactType: 'whatsapp', sourcePage: 'home' },
+                whatsappUrl
+              )}
+            >
+              💬 Falar Agora
             </Button>
           </div>
         </div>

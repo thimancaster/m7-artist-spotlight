@@ -3,9 +3,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Phone, Globe, Instagram, MessageCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useLeadTracking } from "@/hooks/useLeadTracking";
 
 const Contact = () => {
-  const whatsappUrl = "https://wa.me/5562981548834?text=Olá,+vim+através+da+negociação+com+Thiago+Ferreira,+e+gostaria+de+informações+sobre+shows+da+M7+Produções";
+  const { trackAndRedirect } = useLeadTracking();
+  const whatsappMessage = "Olá, vim através da negociação com Thiago Ferreira, e gostaria de informações sobre shows da M7 Produções";
+  const whatsappUrl = `https://wa.me/5562981548834?text=${encodeURIComponent(whatsappMessage)}`;
   
   return (
     <div className="min-h-screen bg-background">
@@ -34,14 +37,14 @@ const Contact = () => {
                   <div>
                     <h3 className="font-bold text-lg mb-2">WhatsApp</h3>
                     <p className="text-muted-foreground mb-3">(62) 98154-8834</p>
-                    <Button asChild size="sm">
-                      <a
-                        href={whatsappUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Enviar mensagem
-                      </a>
+                    <Button 
+                      size="sm"
+                      onClick={() => trackAndRedirect(
+                        { contactType: 'whatsapp', sourcePage: 'contact' },
+                        whatsappUrl
+                      )}
+                    >
+                      Enviar mensagem
                     </Button>
                   </div>
                 </div>
@@ -57,10 +60,15 @@ const Contact = () => {
                   <div>
                     <h3 className="font-bold text-lg mb-2">E-mail</h3>
                     <p className="text-muted-foreground mb-3">contato@m7producoes.com.br</p>
-                    <Button asChild variant="outline" size="sm">
-                      <a href="mailto:contato@m7producoes.com.br">
-                        Enviar e-mail
-                      </a>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => trackAndRedirect(
+                        { contactType: 'email', sourcePage: 'contact' },
+                        'mailto:contato@m7producoes.com.br'
+                      )}
+                    >
+                      Enviar e-mail
                     </Button>
                   </div>
                 </div>
@@ -99,14 +107,15 @@ const Contact = () => {
                   <div>
                     <h3 className="font-bold text-lg mb-2">Instagram</h3>
                     <p className="text-muted-foreground mb-3">@m7producoes</p>
-                    <Button asChild variant="outline" size="sm">
-                      <a
-                        href="https://instagram.com/m7producoes"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Seguir no Instagram
-                      </a>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => trackAndRedirect(
+                        { contactType: 'instagram', sourcePage: 'contact' },
+                        'https://www.instagram.com/m7producoes_/'
+                      )}
+                    >
+                      Seguir no Instagram
                     </Button>
                   </div>
                 </div>
@@ -123,14 +132,15 @@ const Contact = () => {
                 A forma mais rápida de receber uma proposta personalizada é através do WhatsApp.
                 Nossa equipe responde em até 24 horas.
               </p>
-              <Button asChild size="lg" className="text-lg px-8">
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  🟢 Abrir WhatsApp
-                </a>
+              <Button 
+                size="lg" 
+                className="text-lg px-8"
+                onClick={() => trackAndRedirect(
+                  { contactType: 'whatsapp', sourcePage: 'contact-cta' },
+                  whatsappUrl
+                )}
+              >
+                🟢 Abrir WhatsApp
               </Button>
             </CardContent>
           </Card>
