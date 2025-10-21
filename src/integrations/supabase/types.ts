@@ -14,38 +14,103 @@ export type Database = {
   }
   public: {
     Tables: {
+      lead_interactions: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          interaction_type: string
+          lead_id: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          interaction_type: string
+          lead_id: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          interaction_type?: string
+          lead_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_interactions_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           artist_id: string | null
           artist_name: string | null
+          assigned_to: string | null
+          budget_range: string | null
           contact_type: string
           created_at: string
+          customer_email: string | null
+          customer_name: string | null
+          customer_phone: string | null
+          event_date: string | null
+          event_location: string | null
+          event_type: string | null
           id: string
           ip_address: string | null
+          notes: string | null
           referrer: string | null
           source_page: string
+          status: string | null
           user_agent: string | null
         }
         Insert: {
           artist_id?: string | null
           artist_name?: string | null
+          assigned_to?: string | null
+          budget_range?: string | null
           contact_type: string
           created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          event_date?: string | null
+          event_location?: string | null
+          event_type?: string | null
           id?: string
           ip_address?: string | null
+          notes?: string | null
           referrer?: string | null
           source_page: string
+          status?: string | null
           user_agent?: string | null
         }
         Update: {
           artist_id?: string | null
           artist_name?: string | null
+          assigned_to?: string | null
+          budget_range?: string | null
           contact_type?: string
           created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          event_date?: string | null
+          event_location?: string | null
+          event_type?: string | null
           id?: string
           ip_address?: string | null
+          notes?: string | null
           referrer?: string | null
           source_page?: string
+          status?: string | null
           user_agent?: string | null
         }
         Relationships: []
@@ -76,6 +141,62 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      proposals: {
+        Row: {
+          artist_id: string | null
+          artist_name: string | null
+          created_at: string
+          created_by: string
+          event_date: string
+          event_location: string
+          event_type: string
+          id: string
+          lead_id: string
+          notes: string | null
+          status: string | null
+          updated_at: string
+          value: number | null
+        }
+        Insert: {
+          artist_id?: string | null
+          artist_name?: string | null
+          created_at?: string
+          created_by: string
+          event_date: string
+          event_location: string
+          event_type: string
+          id?: string
+          lead_id: string
+          notes?: string | null
+          status?: string | null
+          updated_at?: string
+          value?: number | null
+        }
+        Update: {
+          artist_id?: string | null
+          artist_name?: string | null
+          created_at?: string
+          created_by?: string
+          event_date?: string
+          event_location?: string
+          event_type?: string
+          id?: string
+          lead_id?: string
+          notes?: string | null
+          status?: string | null
+          updated_at?: string
+          value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "proposals_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

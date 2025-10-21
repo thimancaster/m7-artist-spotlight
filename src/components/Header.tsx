@@ -30,6 +30,9 @@ const Header = () => {
             <Link to="/artistas" className={`text-sm font-medium transition-colors hover:text-primary ${isActive("/artistas") ? "text-primary" : "text-foreground"}`}>
               Artistas
             </Link>
+            <Link to="/orcamento" className={`text-sm font-medium transition-colors hover:text-primary ${isActive("/orcamento") ? "text-primary" : "text-foreground"}`}>
+              Orçamento
+            </Link>
             <Link to="/contato" className={`text-sm font-medium transition-colors hover:text-primary ${isActive("/contato") ? "text-primary" : "text-foreground"}`}>
               Contato
             </Link>
@@ -58,6 +61,9 @@ const Header = () => {
             </Link>
             <Link to="/artistas" className={`block text-sm font-medium transition-colors hover:text-primary ${isActive("/artistas") ? "text-primary" : "text-foreground"}`} onClick={() => setIsMenuOpen(false)}>
               Artistas
+            </Link>
+            <Link to="/orcamento" className={`block text-sm font-medium transition-colors hover:text-primary ${isActive("/orcamento") ? "text-primary" : "text-foreground"}`} onClick={() => setIsMenuOpen(false)}>
+              Orçamento
             </Link>
             <Link to="/contato" className={`block text-sm font-medium transition-colors hover:text-primary ${isActive("/contato") ? "text-primary" : "text-foreground"}`} onClick={() => setIsMenuOpen(false)}>
               Contato
