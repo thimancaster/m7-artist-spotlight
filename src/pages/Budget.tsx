@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { z } from "zod";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { artists } from "@/data/artists";
+
+const budgetSchema = z.object({
+  customerName: z.string().trim().min(2, "Nome deve ter pelo menos 2 caracteres").max(100, "Nome muito longo"),
+  customerEmail: z.string().email("Email inválido").max(255, "Email muito longo"),
+  customerPhone: z.string().regex(/^[\d\s()+-]+$/, "Telefone deve conter apenas números e símbolos válidos").min(10, "Telefone muito curto").max(20, "Telefone muito longo"),
+  eventType: z.enum(["eventos-igreja", "evento-corporativo", "show-arena", "evento-prefeitura", "outros"], {
+    errorMap: () => ({ message: "Selecione um tipo de evento" })
+  }),
+  eventDate: z.string().optional(),
+  eventLocation: z.string().trim().min(2, "Local deve ter pelo menos 2 caracteres").max(200, "Local muito longo"),
+  budgetRange: z.string().optional(),
+  artistId: z.string().optional(),
+  notes: z.string().max(2000, "Notas muito longas (máximo 2000 caracteres)").optional(),
+});
 
 export default function Budget() {
   const navigate = useNavigate();
@@ -32,21 +47,24 @@ export default function Budget() {
     setLoading(true);
 
     try {
-      const selectedArtist = artists.find(a => a.id === formData.artistId);
+      // Validate form data
+      const validatedData = budgetSchema.parse(formData);
+      
+      const selectedArtist = artists.find(a => a.id === validatedData.artistId);
       
       const { error } = await supabase.from("leads").insert({
         contact_type: "budget_form",
         source_page: "budget",
-        customer_name: formData.customerName,
-        customer_email: formData.customerEmail,
-        customer_phone: formData.customerPhone,
-        event_type: formData.eventType,
-        event_date: formData.eventDate || null,
-        event_location: formData.eventLocation,
-        budget_range: formData.budgetRange,
-        artist_id: formData.artistId || null,
+        customer_name: validatedData.customerName,
+        customer_email: validatedData.customerEmail,
+        customer_phone: validatedData.customerPhone,
+        event_type: validatedData.eventType,
+        event_date: validatedData.eventDate || null,
+        event_location: validatedData.eventLocation,
+        budget_range: validatedData.budgetRange,
+        artist_id: validatedData.artistId || null,
         artist_name: selectedArtist?.name || null,
-        notes: formData.notes || null,
+        notes: validatedData.notes || null,
         status: "new",
         user_agent: navigator.userAgent,
         referrer: document.referrer || null,
@@ -71,12 +89,20 @@ export default function Budget() {
         notes: "",
       });
     } catch (error) {
-      console.error("Error submitting budget:", error);
-      toast({
-        title: "Erro",
-        description: "Não foi possível enviar sua solicitação. Tente novamente.",
-        variant: "destructive",
-      });
+      if (error instanceof z.ZodError) {
+        const firstError = error.errors[0];
+        toast({
+          title: "Dados inválidos",
+          description: firstError.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Erro",
+          description: "Não foi possível enviar sua solicitação. Tente novamente.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setLoading(false);
     }
