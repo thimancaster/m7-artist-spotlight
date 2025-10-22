@@ -107,7 +107,7 @@ export function LeadsTable({ leads, onSelectLead, onRefresh }: LeadsTableProps) 
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Todos Tipos</SelectItem>
-              <SelectItem value="eventos-igreja">Eventos Igreja</SelectItem>
+              <SelectItem value="evento-igreja">Eventos Igreja</SelectItem>
               <SelectItem value="evento-corporativo">Evento Corporativo</SelectItem>
               <SelectItem value="show-arena">Show Arena</SelectItem>
               <SelectItem value="evento-prefeitura">Evento Prefeitura</SelectItem>
