@@ -136,12 +136,11 @@ export default function Budget() {
                   <SelectValue placeholder="Selecione o tipo de evento" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="casamento">Casamento</SelectItem>
-                  <SelectItem value="aniversario">Aniversário</SelectItem>
-                  <SelectItem value="corporativo">Evento Corporativo</SelectItem>
-                  <SelectItem value="formatura">Formatura</SelectItem>
-                  <SelectItem value="igreja">Evento de Igreja</SelectItem>
-                  <SelectItem value="outro">Outro</SelectItem>
+                  <SelectItem value="eventos-igreja">Eventos Igreja</SelectItem>
+                  <SelectItem value="evento-corporativo">Evento Corporativo</SelectItem>
+                  <SelectItem value="show-arena">Show Arena</SelectItem>
+                  <SelectItem value="evento-prefeitura">Evento Prefeitura</SelectItem>
+                  <SelectItem value="outros">Outros</SelectItem>
                 </SelectContent>
               </Select>
             </div>
