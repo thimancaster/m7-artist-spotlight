@@ -84,7 +84,9 @@ export function LeadDetail({ lead, onUpdate, onClose }: LeadDetailProps) {
         description: "O status do lead foi alterado com sucesso.",
       });
     } catch (error) {
-      console.error("Error updating status:", error);
+      if (import.meta.env.DEV) {
+        console.error("Error updating status:", error);
+      }
       toast({
         title: "Erro",
         description: "Não foi possível atualizar o status.",
@@ -110,7 +112,9 @@ export function LeadDetail({ lead, onUpdate, onClose }: LeadDetailProps) {
       if (error) throw error;
       setInteractions(data || []);
     } catch (error) {
-      console.error("Error fetching interactions:", error);
+      if (import.meta.env.DEV) {
+        console.error("Error fetching interactions:", error);
+      }
     }
   };
 
@@ -136,7 +140,9 @@ export function LeadDetail({ lead, onUpdate, onClose }: LeadDetailProps) {
         description: "A nota foi salva com sucesso.",
       });
     } catch (error) {
-      console.error("Error adding note:", error);
+      if (import.meta.env.DEV) {
+        console.error("Error adding note:", error);
+      }
       toast({
         title: "Erro",
         description: "Não foi possível adicionar a nota.",

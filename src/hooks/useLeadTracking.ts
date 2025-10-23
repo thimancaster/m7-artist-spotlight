@@ -23,10 +23,14 @@ export const useLeadTracking = () => {
       });
 
       if (error) {
-        console.error('Error tracking lead:', error);
+        if (import.meta.env.DEV) {
+          console.error('Error tracking lead:', error);
+        }
       }
     } catch (error) {
-      console.error('Error tracking lead:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error tracking lead:', error);
+      }
     }
   };
 

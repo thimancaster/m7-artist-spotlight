@@ -94,7 +94,9 @@ export default function Admin() {
         conversion: total > 0 ? Math.round((closed / total) * 100) : 0,
       });
     } catch (error) {
-      console.error("Error fetching leads:", error);
+      if (import.meta.env.DEV) {
+        console.error("Error fetching leads:", error);
+      }
       toast({
         title: "Erro",
         description: "Não foi possível carregar os leads.",
@@ -111,7 +113,14 @@ export default function Admin() {
   };
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Carregando...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Carregando painel administrativo...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
