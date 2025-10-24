@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { artists } from "@/data/artists";
+import { brazilianStates, citiesByState } from "@/data/locations";
 
 const budgetSchema = z.object({
   customerName: z.string().trim().min(2, "Nome deve ter pelo menos 2 caracteres").max(100, "Nome muito longo"),
@@ -20,7 +21,8 @@ const budgetSchema = z.object({
     errorMap: () => ({ message: "Selecione um tipo de evento" })
   }),
   eventDate: z.string().optional(),
-  eventLocation: z.string().trim().min(2, "Local deve ter pelo menos 2 caracteres").max(200, "Local muito longo"),
+  eventState: z.string().min(2, "Selecione o estado"),
+  eventCity: z.string().min(2, "Selecione a cidade"),
   budgetRange: z.string().optional(),
   artistId: z.string().optional(),
   notes: z.string().max(2000, "Notas muito longas (máximo 2000 caracteres)").optional(),
@@ -36,11 +38,14 @@ export default function Budget() {
     customerPhone: "",
     eventType: "",
     eventDate: "",
-    eventLocation: "",
+    eventState: "",
+    eventCity: "",
     budgetRange: "",
     artistId: "",
     notes: "",
   });
+
+  const availableCities = formData.eventState ? citiesByState[formData.eventState] || [] : [];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +56,7 @@ export default function Budget() {
       const validatedData = budgetSchema.parse(formData);
       
       const selectedArtist = artists.find(a => a.id === validatedData.artistId);
+      const eventLocation = `${validatedData.eventCity} - ${validatedData.eventState}`;
       
       const { error } = await supabase.from("leads").insert({
         contact_type: "budget_form",
@@ -60,7 +66,7 @@ export default function Budget() {
         customer_phone: validatedData.customerPhone,
         event_type: validatedData.eventType,
         event_date: validatedData.eventDate || null,
-        event_location: validatedData.eventLocation,
+        event_location: eventLocation,
         budget_range: validatedData.budgetRange,
         artist_id: validatedData.artistId || null,
         artist_name: selectedArtist?.name || null,
@@ -73,8 +79,9 @@ export default function Budget() {
       if (error) throw error;
 
       toast({
-        title: "Orçamento solicitado!",
-        description: "Entraremos em contato em breve.",
+        title: "✅ Solicitação enviada com sucesso!",
+        description: `Olá ${validatedData.customerName}! Recebemos sua solicitação de orçamento para ${validatedData.eventCity}. Nossa equipe entrará em contato em breve através do telefone/WhatsApp informado. Obrigado!`,
+        duration: 6000,
       });
 
       setFormData({
@@ -83,7 +90,8 @@ export default function Budget() {
         customerPhone: "",
         eventType: "",
         eventDate: "",
-        eventLocation: "",
+        eventState: "",
+        eventCity: "",
         budgetRange: "",
         artistId: "",
         notes: "",
@@ -171,26 +179,54 @@ export default function Budget() {
               </Select>
             </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="eventDate">Data do Evento</Label>
+              <Input
+                id="eventDate"
+                type="date"
+                value={formData.eventDate}
+                onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
+              />
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="eventDate">Data do Evento</Label>
-                <Input
-                  id="eventDate"
-                  type="date"
-                  value={formData.eventDate}
-                  onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
-                />
+                <Label htmlFor="eventState">Estado *</Label>
+                <Select 
+                  value={formData.eventState} 
+                  onValueChange={(value) => setFormData({ ...formData, eventState: value, eventCity: "" })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione o estado" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {brazilianStates.map((state) => (
+                      <SelectItem key={state.value} value={state.value}>
+                        {state.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="eventLocation">Local *</Label>
-                <Input
-                  id="eventLocation"
-                  required
-                  placeholder="Cidade/Estado"
-                  value={formData.eventLocation}
-                  onChange={(e) => setFormData({ ...formData, eventLocation: e.target.value })}
-                />
+                <Label htmlFor="eventCity">Cidade *</Label>
+                <Select 
+                  value={formData.eventCity} 
+                  onValueChange={(value) => setFormData({ ...formData, eventCity: value })}
+                  disabled={!formData.eventState}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={formData.eventState ? "Selecione a cidade" : "Selecione o estado primeiro"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableCities.map((city) => (
+                      <SelectItem key={city} value={city}>
+                        {city}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
