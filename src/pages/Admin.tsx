@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import type { Session } from "@supabase/supabase-js";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Users, TrendingUp, Phone } from "lucide-react";
@@ -31,9 +32,11 @@ interface Lead {
 export default function Admin() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [session, setSession] = useState<Session | null>(null);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [stats, setStats] = useState({
     total: 0,
     new: 0,
@@ -42,27 +45,68 @@ export default function Admin() {
   });
 
   useEffect(() => {
-    checkAuth();
-    fetchLeads();
-  }, []);
+    // Verificar sessão inicial
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      if (!session) {
+        navigate("/auth");
+      } else {
+        checkAdminRole(session.user.id);
+      }
+    });
 
-  const checkAuth = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      navigate("/auth");
-      return;
+    // Monitorar mudanças de autenticação
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      if (!session) {
+        navigate("/auth");
+      } else {
+        checkAdminRole(session.user.id);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  useEffect(() => {
+    if (isAdmin) {
+      fetchLeads();
     }
+  }, [isAdmin]);
 
-    const { data: roles } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", session.user.id)
-      .eq("role", "admin");
+  const checkAdminRole = async (userId: string) => {
+    try {
+      const { data: roles, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userId)
+        .eq("role", "admin")
+        .maybeSingle();
 
-    if (!roles || roles.length === 0) {
+      if (error) throw error;
+
+      if (!roles) {
+        toast({
+          title: "Acesso negado",
+          description: "Você não tem permissão de administrador. Entre em contato com o suporte.",
+          variant: "destructive",
+          duration: 6000,
+        });
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+        return;
+      }
+
+      setIsAdmin(true);
+      setLoading(false);
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error("Error checking admin role:", error);
+      }
       toast({
-        title: "Acesso negado",
-        description: "Você não tem permissão para acessar esta área.",
+        title: "Erro",
+        description: "Não foi possível verificar suas permissões.",
         variant: "destructive",
       });
       navigate("/");
