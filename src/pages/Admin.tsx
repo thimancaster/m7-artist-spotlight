@@ -45,23 +45,56 @@ export default function Admin() {
   });
 
   useEffect(() => {
-    // Verificar sessão inicial
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (!session) {
+    // Verificar sessão inicial com tratamento de erros
+    const initSession = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          // Se houver erro ao obter a sessão, limpar e redirecionar
+          if (import.meta.env.DEV) {
+            console.error("Error getting session:", error);
+          }
+          await supabase.auth.signOut();
+          localStorage.clear();
+          navigate("/auth");
+          return;
+        }
+        
+        setSession(session);
+        if (!session) {
+          navigate("/auth");
+        } else {
+          checkAdminRole(session.user.id);
+        }
+      } catch (err) {
+        if (import.meta.env.DEV) {
+          console.error("Session initialization error:", err);
+        }
+        await supabase.auth.signOut();
+        localStorage.clear();
         navigate("/auth");
-      } else {
-        checkAdminRole(session.user.id);
       }
-    });
+    };
+
+    initSession();
 
     // Monitorar mudanças de autenticação
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      if (!session) {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'TOKEN_REFRESHED') {
+        setSession(session);
+        if (session) {
+          checkAdminRole(session.user.id);
+        }
+      } else if (event === 'SIGNED_IN') {
+        setSession(session);
+        if (session) {
+          checkAdminRole(session.user.id);
+        }
+      } else if (event === 'SIGNED_OUT') {
+        setSession(null);
+        localStorage.clear();
         navigate("/auth");
-      } else {
-        checkAdminRole(session.user.id);
       }
     });
 

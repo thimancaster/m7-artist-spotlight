@@ -40,19 +40,46 @@ const Auth = () => {
 
   // Verificar se usuário já está autenticado
   useEffect(() => {
-    // Verificar sessão atual
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setSession(session);
-        navigate('/admin');
+    // Limpar tokens corrompidos do localStorage
+    const checkSession = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          // Se houver erro ao obter a sessão, limpar o localStorage
+          if (import.meta.env.DEV) {
+            console.error("Error getting session:", error);
+          }
+          await supabase.auth.signOut();
+          localStorage.clear();
+          return;
+        }
+        
+        if (session) {
+          setSession(session);
+          navigate('/admin');
+        }
+      } catch (err) {
+        if (import.meta.env.DEV) {
+          console.error("Session check error:", err);
+        }
+        await supabase.auth.signOut();
+        localStorage.clear();
       }
-    });
+    };
+
+    checkSession();
 
     // Monitorar mudanças de autenticação
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      if (session) {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'TOKEN_REFRESHED') {
+        setSession(session);
+      } else if (event === 'SIGNED_IN') {
+        setSession(session);
         navigate('/admin');
+      } else if (event === 'SIGNED_OUT') {
+        setSession(null);
+        localStorage.clear();
       }
     });
 

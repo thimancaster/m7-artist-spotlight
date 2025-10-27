@@ -1,12 +1,17 @@
-# 🔐 Configuração do Primeiro Admin
+# 🔐 Configuração de Administradores
 
-Este guia explica como configurar o primeiro usuário administrador do sistema.
+Este guia explica como configurar usuários administradores no sistema.
 
-## ⚠️ Importante
+## ✅ Administrador Principal Já Configurado
 
-A tabela `user_roles` está vazia atualmente. Você precisa adicionar manualmente a role de admin para o primeiro usuário.
+O usuário **thimancaster@hotmail.com** já está configurado como administrador principal do sistema.
 
-## 📝 Passo a Passo
+Para fazer login:
+1. Acesse `/auth`
+2. Entre com o email: `thimancaster@hotmail.com`
+3. Use sua senha cadastrada
+
+## 📝 Adicionar Novos Administradores
 
 ### 1️⃣ Criar uma Conta de Usuário
 
