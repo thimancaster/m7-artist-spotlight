@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import type { Session } from "@supabase/supabase-js";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,6 +12,7 @@ import { BarChart, Users, TrendingUp, Phone } from "lucide-react";
 import { LeadsTable } from "@/components/admin/LeadsTable";
 import { LeadDetail } from "@/components/admin/LeadDetail";
 import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
+import { ConversionFunnel } from "@/components/admin/ConversionFunnel";
 
 interface Lead {
   id: string;
@@ -37,6 +39,7 @@ export default function Admin() {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [unreadLeadsCount, setUnreadLeadsCount] = useState(0);
   const [stats, setStats] = useState({
     total: 0,
     new: 0,
@@ -104,8 +107,52 @@ export default function Admin() {
   useEffect(() => {
     if (isAdmin) {
       fetchLeads();
+      setupRealtimeSubscription();
     }
   }, [isAdmin]);
+
+  const setupRealtimeSubscription = () => {
+    // Contar leads novos (< 1 hora)
+    const fetchUnreadLeads = async () => {
+      const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+      const { count } = await supabase
+        .from('leads')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', oneHourAgo)
+        .eq('status', 'new');
+      setUnreadLeadsCount(count || 0);
+    };
+
+    fetchUnreadLeads();
+
+    // Realtime subscription para novos leads
+    const channel = supabase
+      .channel('leads-realtime')
+      .on('postgres_changes', 
+        { event: 'INSERT', schema: 'public', table: 'leads' },
+        (payload) => {
+          const newLead = payload.new as any;
+          
+          // Incrementar contador
+          setUnreadLeadsCount(prev => prev + 1);
+          
+          // Toast notification
+          toast({
+            title: "🎉 Novo Lead Capturado!",
+            description: `${newLead.customer_name || 'Lead anônimo'} - ${newLead.lead_temperature === 'hot' ? '🔥 QUENTE' : newLead.lead_temperature === 'warm' ? '🟡 MORNO' : '❄️ FRIO'}`,
+            duration: 5000,
+          });
+
+          // Atualizar lista de leads
+          fetchLeads();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    };
+  };
 
   const checkAdminRole = async (userId: string) => {
     try {
@@ -205,7 +252,14 @@ export default function Admin() {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold">Painel Administrativo</h1>
+            <h1 className="text-3xl font-bold flex items-center gap-3">
+              Painel Administrativo
+              {unreadLeadsCount > 0 && (
+                <Badge variant="destructive" className="text-lg px-3 py-1">
+                  {unreadLeadsCount} novo{unreadLeadsCount > 1 ? 's' : ''}
+                </Badge>
+              )}
+            </h1>
             <p className="text-muted-foreground mt-1">Gestão de Leads e Analytics</p>
           </div>
           <Button onClick={handleLogout} variant="outline">
@@ -259,8 +313,16 @@ export default function Admin() {
         {/* Main Content */}
         <Tabs defaultValue="leads" className="space-y-4">
           <TabsList>
-            <TabsTrigger value="leads">Leads</TabsTrigger>
+            <TabsTrigger value="leads">
+              Leads
+              {unreadLeadsCount > 0 && (
+                <Badge variant="destructive" className="ml-2">
+                  {unreadLeadsCount}
+                </Badge>
+              )}
+            </TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="conversion">Funil</TabsTrigger>
           </TabsList>
 
           <TabsContent value="leads" className="space-y-4">
@@ -295,6 +357,10 @@ export default function Admin() {
 
           <TabsContent value="analytics">
             <AnalyticsDashboard leads={leads} />
+          </TabsContent>
+
+          <TabsContent value="conversion">
+            <ConversionFunnel leads={leads} />
           </TabsContent>
         </Tabs>
       </div>

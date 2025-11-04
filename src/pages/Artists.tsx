@@ -4,8 +4,16 @@ import { Button } from "@/components/ui/button";
 import { artists } from "@/data/artists";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useLeadCaptureIntent } from "@/hooks/useLeadCaptureIntent";
+import LeadCaptureModal from "@/components/LeadCaptureModal";
 
 const Artists = () => {
+  const { showModal, setShowModal } = useLeadCaptureIntent({
+    timeoutMs: 45000,
+    enableExitIntent: true,
+    enableTimeoutIntent: true,
+  });
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -53,6 +61,12 @@ const Artists = () => {
           </div>
         </div>
       </section>
+
+      <LeadCaptureModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        sourcePage="artists"
+      />
 
       <Footer />
     </div>

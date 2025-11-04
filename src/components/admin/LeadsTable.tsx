@@ -29,6 +29,8 @@ interface Lead {
   status: string;
   notes: string | null;
   created_at: string;
+  lead_score?: number;
+  lead_temperature?: string;
 }
 
 interface LeadsTableProps {
@@ -120,6 +122,8 @@ export function LeadsTable({ leads, onSelectLead, onRefresh }: LeadsTableProps) 
             <TableRow>
               <TableHead>Data</TableHead>
               <TableHead>Cliente</TableHead>
+              <TableHead>Score</TableHead>
+              <TableHead>Temp</TableHead>
               <TableHead>Contato</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Ação</TableHead>
@@ -133,40 +137,70 @@ export function LeadsTable({ leads, onSelectLead, onRefresh }: LeadsTableProps) 
                 </TableCell>
               </TableRow>
             ) : (
-              filteredLeads.map((lead) => (
-              <TableRow key={lead.id}>
-                <TableCell className="text-sm">
-                  {new Date(lead.created_at).toLocaleDateString("pt-BR")}
-                </TableCell>
-                <TableCell>
-                  <div className="flex flex-col">
-                    <span className="font-medium">{lead.customer_name || "-"}</span>
-                    {lead.event_type && (
-                      <span className="text-xs text-muted-foreground capitalize">
-                        {lead.event_type}
-                      </span>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell className="capitalize text-sm">
-                  {lead.contact_type.replace("_", " ")}
-                </TableCell>
-                <TableCell>
-                  <Badge variant={statusMap[lead.status]?.variant || "default"}>
-                    {statusMap[lead.status]?.label || lead.status}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    onClick={() => onSelectLead(lead)}
-                    variant="ghost"
-                    size="sm"
-                  >
-                    Ver Detalhes
-                  </Button>
-                </TableCell>
-              </TableRow>
-              ))
+              filteredLeads
+                .sort((a, b) => (b.lead_score || 0) - (a.lead_score || 0))
+                .map((lead) => {
+                  const isNew = (Date.now() - new Date(lead.created_at).getTime()) < 3600000; // < 1 hora
+                  return (
+                    <TableRow key={lead.id}>
+                      <TableCell className="text-sm">
+                        <div className="flex flex-col">
+                          <span>{new Date(lead.created_at).toLocaleDateString("pt-BR")}</span>
+                          {isNew && (
+                            <Badge variant="destructive" className="w-fit mt-1 text-xs">
+                              NOVO
+                            </Badge>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-col">
+                          <span className="font-medium">{lead.customer_name || "-"}</span>
+                          {lead.event_type && (
+                            <span className="text-xs text-muted-foreground capitalize">
+                              {lead.event_type}
+                            </span>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge 
+                          variant={
+                            (lead.lead_score || 0) >= 60 ? 'destructive' : 
+                            (lead.lead_score || 0) >= 30 ? 'default' : 
+                            'secondary'
+                          }
+                        >
+                          {lead.lead_score || 0}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-2xl" title={lead.lead_temperature || 'cold'}>
+                          {lead.lead_temperature === 'hot' ? '🔥' : 
+                           lead.lead_temperature === 'warm' ? '🟡' : 
+                           '❄️'}
+                        </span>
+                      </TableCell>
+                      <TableCell className="capitalize text-sm">
+                        {lead.contact_type.replace("_", " ")}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={statusMap[lead.status]?.variant || "default"}>
+                          {statusMap[lead.status]?.label || lead.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          onClick={() => onSelectLead(lead)}
+                          variant="ghost"
+                          size="sm"
+                        >
+                          Ver Detalhes
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
             )}
           </TableBody>
         </Table>

@@ -8,6 +8,11 @@ interface LeadData {
   artistName?: string;
 }
 
+interface CapturedData {
+  name: string;
+  phone: string;
+}
+
 export const useLeadTracking = () => {
   const { toast } = useToast();
 
@@ -39,5 +44,39 @@ export const useLeadTracking = () => {
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
-  return { trackLead, trackAndRedirect };
+  const trackAndRedirectWithCapture = async (
+    data: LeadData,
+    url: string,
+    capturedData: CapturedData
+  ) => {
+    try {
+      // Salvar lead com dados capturados
+      const { error } = await supabase.from('leads').insert({
+        contact_type: data.contactType,
+        source_page: data.sourcePage,
+        artist_id: data.artistId,
+        artist_name: data.artistName,
+        customer_name: capturedData.name,
+        customer_phone: capturedData.phone,
+        user_agent: navigator.userAgent,
+        referrer: document.referrer || null,
+        status: 'new',
+      });
+
+      if (error) {
+        if (import.meta.env.DEV) {
+          console.error('Error tracking lead with capture:', error);
+        }
+      }
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Error tracking lead with capture:', error);
+      }
+    }
+    
+    // Redirecionar para WhatsApp
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  return { trackLead, trackAndRedirect, trackAndRedirectWithCapture };
 };

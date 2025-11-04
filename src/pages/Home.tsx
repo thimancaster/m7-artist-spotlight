@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Music, Users, Calendar } from "lucide-react";
@@ -5,11 +6,33 @@ import heroImage from "@/assets/hero-image.png";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useLeadTracking } from "@/hooks/useLeadTracking";
+import { useLeadCaptureIntent } from "@/hooks/useLeadCaptureIntent";
+import LeadCaptureModal from "@/components/LeadCaptureModal";
+import WhatsAppCaptureModal from "@/components/WhatsAppCaptureModal";
 
 const Home = () => {
-  const { trackAndRedirect } = useLeadTracking();
+  const { trackAndRedirectWithCapture } = useLeadTracking();
+  const { showModal, setShowModal } = useLeadCaptureIntent({
+    timeoutMs: 30000,
+    enableExitIntent: true,
+    enableTimeoutIntent: true,
+  });
+  
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const whatsappMessage = "Olá, vim através da negociação com Thiago Ferreira, e gostaria de informações sobre shows da M7 Produções";
   const whatsappUrl = `https://wa.me/5562981548834?text=${encodeURIComponent(whatsappMessage)}`;
+
+  const handleWhatsAppClick = () => {
+    setShowWhatsAppModal(true);
+  };
+
+  const handleWhatsAppSubmit = (name: string, phone: string) => {
+    trackAndRedirectWithCapture(
+      { contactType: 'whatsapp', sourcePage: 'home' },
+      whatsappUrl,
+      { name, phone }
+    );
+  };
   
   return <div className="min-h-screen bg-background">
       <Header />
@@ -91,16 +114,25 @@ const Home = () => {
             <Button 
               variant="outline" 
               size="lg"
-              onClick={() => trackAndRedirect(
-                { contactType: 'whatsapp', sourcePage: 'home' },
-                whatsappUrl
-              )}
+              onClick={handleWhatsAppClick}
             >
               💬 Falar Agora
             </Button>
           </div>
         </div>
       </section>
+
+      <LeadCaptureModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        sourcePage="home"
+      />
+
+      <WhatsAppCaptureModal
+        isOpen={showWhatsAppModal}
+        onClose={() => setShowWhatsAppModal(false)}
+        onSubmit={handleWhatsAppSubmit}
+      />
 
       <Footer />
     </div>;

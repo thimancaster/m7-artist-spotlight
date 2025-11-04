@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Instagram, Youtube, Music2, ArrowLeft, Disc, MicVocal, Facebook, Link as LinkIcon } from "lucide-react";
@@ -5,11 +6,21 @@ import { artists } from "@/data/artists";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useLeadTracking } from "@/hooks/useLeadTracking";
+import { useLeadCaptureIntent } from "@/hooks/useLeadCaptureIntent";
+import LeadCaptureModal from "@/components/LeadCaptureModal";
+import WhatsAppCaptureModal from "@/components/WhatsAppCaptureModal";
 
 const ArtistDetail = () => {
   const { id } = useParams<{ id: string }>();
   const artist = artists.find((a) => a.id === id);
-  const { trackAndRedirect } = useLeadTracking();
+  const { trackAndRedirectWithCapture } = useLeadTracking();
+  const { showModal, setShowModal } = useLeadCaptureIntent({
+    timeoutMs: 45000,
+    enableExitIntent: true,
+    enableTimeoutIntent: true,
+  });
+  
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
 
   if (!artist) {
     return (
@@ -26,6 +37,23 @@ const ArtistDetail = () => {
 
   const whatsappMessage = `Olá, vim através da negociação com Thiago Ferreira, e gostaria de informações sobre o show de ${artist.name} para o meu evento.`;
   const whatsappUrl = `https://wa.me/5562981548834?text=${encodeURIComponent(whatsappMessage)}`;
+
+  const handleWhatsAppClick = () => {
+    setShowWhatsAppModal(true);
+  };
+
+  const handleWhatsAppSubmit = (name: string, phone: string) => {
+    trackAndRedirectWithCapture(
+      { 
+        contactType: 'whatsapp', 
+        sourcePage: 'artist-detail',
+        artistId: artist.id,
+        artistName: artist.name
+      },
+      whatsappUrl,
+      { name, phone }
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -178,15 +206,7 @@ const ArtistDetail = () => {
                 <Button 
                   size="lg" 
                   className="w-full text-lg"
-                  onClick={() => trackAndRedirect(
-                    { 
-                      contactType: 'whatsapp', 
-                      sourcePage: 'artist-detail',
-                      artistId: artist.id,
-                      artistName: artist.name
-                    },
-                    whatsappUrl
-                  )}
+                  onClick={handleWhatsAppClick}
                 >
                   🟢 Solicitar Proposta de Show
                 </Button>
@@ -195,6 +215,19 @@ const ArtistDetail = () => {
           </div>
         </div>
       </section>
+
+      <LeadCaptureModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        sourcePage="artist-detail"
+      />
+
+      <WhatsAppCaptureModal
+        isOpen={showWhatsAppModal}
+        onClose={() => setShowWhatsAppModal(false)}
+        onSubmit={handleWhatsAppSubmit}
+        artistName={artist.name}
+      />
 
       <Footer />
     </div>
