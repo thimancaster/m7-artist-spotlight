@@ -65,6 +65,8 @@ export type Database = {
           event_type: string | null
           id: string
           ip_address: string | null
+          lead_score: number | null
+          lead_temperature: string | null
           notes: string | null
           referrer: string | null
           source_page: string
@@ -86,6 +88,8 @@ export type Database = {
           event_type?: string | null
           id?: string
           ip_address?: string | null
+          lead_score?: number | null
+          lead_temperature?: string | null
           notes?: string | null
           referrer?: string | null
           source_page: string
@@ -107,6 +111,8 @@ export type Database = {
           event_type?: string | null
           id?: string
           ip_address?: string | null
+          lead_score?: number | null
+          lead_temperature?: string | null
           notes?: string | null
           referrer?: string | null
           source_page?: string
