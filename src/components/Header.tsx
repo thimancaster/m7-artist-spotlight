@@ -3,15 +3,29 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLeadTracking } from "@/hooks/useLeadTracking";
+import WhatsAppCaptureModal from "@/components/WhatsAppCaptureModal";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const location = useLocation();
-  const { trackAndRedirect } = useLeadTracking();
+  const { trackAndRedirectWithCapture } = useLeadTracking();
   const isActive = (path: string) => location.pathname === path;
   
   const whatsappMessage = "Olá, vim através da negociação com Thiago Ferreira, e gostaria de informações sobre shows da M7 Produções";
   const whatsappUrl = `https://wa.me/5562981548834?text=${encodeURIComponent(whatsappMessage)}`;
+
+  const handleWhatsAppClick = () => {
+    setShowWhatsAppModal(true);
+  };
+
+  const handleWhatsAppSubmit = (name: string, phone: string) => {
+    trackAndRedirectWithCapture(
+      { contactType: 'whatsapp', sourcePage: location.pathname === '/' ? 'header' : 'header-mobile' },
+      whatsappUrl,
+      { name, phone }
+    );
+  };
   return <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 shadow-lg shadow-black/5">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20 rounded-lg bg-transparent">
@@ -39,10 +53,7 @@ const Header = () => {
             <Button 
               variant="default" 
               size="sm"
-              onClick={() => trackAndRedirect(
-                { contactType: 'whatsapp', sourcePage: 'header' },
-                whatsappUrl
-              )}
+              onClick={handleWhatsAppClick}
             >
               Falar no WhatsApp
             </Button>
@@ -73,10 +84,7 @@ const Header = () => {
               size="sm" 
               className="w-full"
               onClick={() => {
-                trackAndRedirect(
-                  { contactType: 'whatsapp', sourcePage: 'header-mobile' },
-                  whatsappUrl
-                );
+                handleWhatsAppClick();
                 setIsMenuOpen(false);
               }}
             >
@@ -84,6 +92,12 @@ const Header = () => {
             </Button>
           </nav>}
       </div>
+
+      <WhatsAppCaptureModal
+        isOpen={showWhatsAppModal}
+        onClose={() => setShowWhatsAppModal(false)}
+        onSubmit={handleWhatsAppSubmit}
+      />
     </header>;
 };
 export default Header;

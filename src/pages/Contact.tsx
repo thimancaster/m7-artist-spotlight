@@ -1,14 +1,29 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Phone, Globe, Instagram, MessageCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useLeadTracking } from "@/hooks/useLeadTracking";
+import WhatsAppCaptureModal from "@/components/WhatsAppCaptureModal";
 
 const Contact = () => {
-  const { trackAndRedirect } = useLeadTracking();
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
+  const { trackAndRedirect, trackAndRedirectWithCapture } = useLeadTracking();
   const whatsappMessage = "Olá, vim através da negociação com Thiago Ferreira, e gostaria de informações sobre shows da M7 Produções";
   const whatsappUrl = `https://wa.me/5562981548834?text=${encodeURIComponent(whatsappMessage)}`;
+
+  const handleWhatsAppClick = () => {
+    setShowWhatsAppModal(true);
+  };
+
+  const handleWhatsAppSubmit = (name: string, phone: string) => {
+    trackAndRedirectWithCapture(
+      { contactType: 'whatsapp', sourcePage: 'contact' },
+      whatsappUrl,
+      { name, phone }
+    );
+  };
   
   return (
     <div className="min-h-screen bg-background">
@@ -39,10 +54,7 @@ const Contact = () => {
                     <p className="text-muted-foreground mb-3">(62) 98154-8834</p>
                     <Button 
                       size="sm"
-                      onClick={() => trackAndRedirect(
-                        { contactType: 'whatsapp', sourcePage: 'contact' },
-                        whatsappUrl
-                      )}
+                      onClick={handleWhatsAppClick}
                     >
                       Enviar mensagem
                     </Button>
@@ -135,10 +147,7 @@ const Contact = () => {
               <Button 
                 size="lg" 
                 className="text-lg px-8"
-                onClick={() => trackAndRedirect(
-                  { contactType: 'whatsapp', sourcePage: 'contact-cta' },
-                  whatsappUrl
-                )}
+                onClick={handleWhatsAppClick}
               >
                 🟢 Abrir WhatsApp
               </Button>
@@ -146,6 +155,12 @@ const Contact = () => {
           </Card>
         </div>
       </section>
+
+      <WhatsAppCaptureModal
+        isOpen={showWhatsAppModal}
+        onClose={() => setShowWhatsAppModal(false)}
+        onSubmit={handleWhatsAppSubmit}
+      />
 
       <Footer />
     </div>
