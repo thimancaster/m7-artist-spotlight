@@ -7,12 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Mail, Phone, Calendar, MapPin, DollarSign, X, MessageSquare, ExternalLink } from "lucide-react";
+import { Mail, Phone, Calendar, MapPin, DollarSign, X, MessageSquare, ExternalLink, Plus, FileText } from "lucide-react";
+import { ProposalFormModal } from "./ProposalFormModal";
 
 interface Lead {
   id: string;
   contact_type: string;
   source_page: string;
+  artist_id: string | null;
   artist_name: string | null;
   customer_name: string | null;
   customer_email: string | null;
@@ -21,6 +23,22 @@ interface Lead {
   event_date: string | null;
   event_location: string | null;
   budget_range: string | null;
+  status: string;
+  notes: string | null;
+  created_at: string;
+  lead_score?: number;
+  lead_temperature?: string;
+}
+
+interface Proposal {
+  id: string;
+  lead_id: string;
+  artist_id: string | null;
+  artist_name: string | null;
+  value: number | null;
+  event_date: string;
+  event_location: string;
+  event_type: string;
   status: string;
   notes: string | null;
   created_at: string;
@@ -49,12 +67,22 @@ interface Interaction {
   user_id: string;
 }
 
+const proposalStatusMap: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
+  draft: { label: "Rascunho", variant: "secondary" },
+  sent: { label: "Enviada", variant: "default" },
+  accepted: { label: "Aceita", variant: "default" },
+  rejected: { label: "Rejeitada", variant: "destructive" },
+};
+
 export function LeadDetail({ lead, onUpdate, onClose }: LeadDetailProps) {
   const { toast } = useToast();
   const [status, setStatus] = useState(lead.status);
   const [note, setNote] = useState("");
   const [saving, setSaving] = useState(false);
   const [interactions, setInteractions] = useState<Interaction[]>([]);
+  const [proposals, setProposals] = useState<Proposal[]>([]);
+  const [showProposalModal, setShowProposalModal] = useState(false);
+  const [editingProposal, setEditingProposal] = useState<Proposal | null>(null);
 
   const handleStatusUpdate = async (newStatus: string) => {
     setSaving(true);
@@ -99,7 +127,25 @@ export function LeadDetail({ lead, onUpdate, onClose }: LeadDetailProps) {
 
   useEffect(() => {
     fetchInteractions();
+    fetchProposals();
   }, [lead.id]);
+
+  const fetchProposals = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("proposals")
+        .select("*")
+        .eq("lead_id", lead.id)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      setProposals(data || []);
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error("Error fetching proposals:", error);
+      }
+    }
+  };
 
   const fetchInteractions = async () => {
     try {
@@ -202,6 +248,35 @@ export function LeadDetail({ lead, onUpdate, onClose }: LeadDetailProps) {
           )}
         </div>
 
+        {/* Lead Score & Temperature */}
+        <div className="flex items-center gap-3 py-2">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Score:</span>
+            <Badge 
+              variant={
+                (lead.lead_score || 0) >= 60 ? 'destructive' : 
+                (lead.lead_score || 0) >= 30 ? 'default' : 
+                'secondary'
+              }
+            >
+              {lead.lead_score || 0}
+            </Badge>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Temp:</span>
+            <span className="text-xl" title={lead.lead_temperature || 'cold'}>
+              {lead.lead_temperature === 'hot' ? '🔥' : 
+               lead.lead_temperature === 'warm' ? '🟡' : 
+               '❄️'}
+            </span>
+            <span className="text-sm capitalize">
+              {lead.lead_temperature === 'hot' ? 'Quente' :
+               lead.lead_temperature === 'warm' ? 'Morno' :
+               'Frio'}
+            </span>
+          </div>
+        </div>
+
         <Separator />
 
         <div>
@@ -299,6 +374,67 @@ export function LeadDetail({ lead, onUpdate, onClose }: LeadDetailProps) {
           </div>
         )}
 
+        {/* Propostas */}
+        <div className="border-t pt-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Propostas ({proposals.length})
+            </h3>
+            <Button 
+              onClick={() => {
+                setEditingProposal(null);
+                setShowProposalModal(true);
+              }} 
+              size="sm"
+            >
+              <Plus className="h-4 w-4 mr-1" />
+              Nova Proposta
+            </Button>
+          </div>
+
+          {proposals.length > 0 ? (
+            <div className="space-y-2 max-h-48 overflow-y-auto">
+              {proposals.map((proposal) => (
+                <div 
+                  key={proposal.id} 
+                  className="bg-muted p-3 rounded text-sm cursor-pointer hover:bg-muted/80 transition-colors"
+                  onClick={() => {
+                    setEditingProposal(proposal);
+                    setShowProposalModal(true);
+                  }}
+                >
+                  <div className="flex justify-between items-start mb-2">
+                    <Badge variant={proposalStatusMap[proposal.status]?.variant || "outline"}>
+                      {proposalStatusMap[proposal.status]?.label || proposal.status}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground">
+                      {new Date(proposal.created_at).toLocaleDateString("pt-BR")}
+                    </span>
+                  </div>
+                  <div className="space-y-1">
+                    {proposal.artist_name && (
+                      <p className="font-medium">{proposal.artist_name}</p>
+                    )}
+                    {proposal.value && (
+                      <p className="text-primary font-semibold">
+                        {proposal.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                      </p>
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(proposal.event_date).toLocaleDateString("pt-BR")} • {proposal.event_location}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground text-center py-4">
+              Nenhuma proposta enviada ainda.
+            </p>
+          )}
+        </div>
+
         {/* Interaction History */}
         {interactions.length > 0 && (
           <div className="border-t pt-4 space-y-2">
@@ -347,6 +483,20 @@ export function LeadDetail({ lead, onUpdate, onClose }: LeadDetailProps) {
           <p>Data: {new Date(lead.created_at).toLocaleString("pt-BR")}</p>
         </div>
       </CardContent>
+
+      <ProposalFormModal
+        isOpen={showProposalModal}
+        onClose={() => {
+          setShowProposalModal(false);
+          setEditingProposal(null);
+        }}
+        lead={lead}
+        proposal={editingProposal}
+        onSuccess={() => {
+          fetchProposals();
+          onUpdate();
+        }}
+      />
     </Card>
   );
 }
