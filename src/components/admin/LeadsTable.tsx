@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 import {
   Table,
   TableBody,
@@ -12,12 +13,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RefreshCw, Search, Filter } from "lucide-react";
+import { RefreshCw, Search, Filter, Thermometer } from "lucide-react";
 
 interface Lead {
   id: string;
   contact_type: string;
   source_page: string;
+  artist_id: string | null;
   artist_name: string | null;
   customer_name: string | null;
   customer_email: string | null;
@@ -52,6 +54,8 @@ export function LeadsTable({ leads, onSelectLead, onRefresh }: LeadsTableProps) 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [eventTypeFilter, setEventTypeFilter] = useState<string>("all");
+  const [temperatureFilter, setTemperatureFilter] = useState<string>("all");
+  const [minScore, setMinScore] = useState<number>(0);
 
   const filteredLeads = leads.filter((lead) => {
     const matchesSearch = 
@@ -61,8 +65,10 @@ export function LeadsTable({ leads, onSelectLead, onRefresh }: LeadsTableProps) 
     
     const matchesStatus = statusFilter === "all" || lead.status === statusFilter;
     const matchesEventType = eventTypeFilter === "all" || lead.event_type === eventTypeFilter;
+    const matchesTemperature = temperatureFilter === "all" || lead.lead_temperature === temperatureFilter;
+    const matchesScore = (lead.lead_score || 0) >= minScore;
     
-    return matchesSearch && matchesStatus && matchesEventType;
+    return matchesSearch && matchesStatus && matchesEventType && matchesTemperature && matchesScore;
   });
 
   return (
@@ -75,47 +81,77 @@ export function LeadsTable({ leads, onSelectLead, onRefresh }: LeadsTableProps) 
       </CardHeader>
       <CardContent>
         {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Buscar por nome, email ou telefone..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-full md:w-[180px]">
-              <Filter className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos Status</SelectItem>
-              <SelectItem value="new">Novo</SelectItem>
-              <SelectItem value="contacted">Contatado</SelectItem>
-              <SelectItem value="proposal_sent">Proposta Enviada</SelectItem>
-              <SelectItem value="negotiation">Negociação</SelectItem>
-              <SelectItem value="closed_won">Fechado</SelectItem>
-              <SelectItem value="closed_lost">Perdido</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="space-y-4 mb-4">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar por nome, email ou telefone..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-full md:w-[180px]">
+                <Filter className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos Status</SelectItem>
+                <SelectItem value="new">Novo</SelectItem>
+                <SelectItem value="contacted">Contatado</SelectItem>
+                <SelectItem value="proposal_sent">Proposta Enviada</SelectItem>
+                <SelectItem value="negotiation">Negociação</SelectItem>
+                <SelectItem value="closed_won">Fechado</SelectItem>
+                <SelectItem value="closed_lost">Perdido</SelectItem>
+              </SelectContent>
+            </Select>
 
-          <Select value={eventTypeFilter} onValueChange={setEventTypeFilter}>
-            <SelectTrigger className="w-full md:w-[180px]">
-              <Filter className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Tipo" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos Tipos</SelectItem>
-              <SelectItem value="evento-igreja">Eventos Igreja</SelectItem>
-              <SelectItem value="evento-corporativo">Evento Corporativo</SelectItem>
-              <SelectItem value="show-arena">Show Arena</SelectItem>
-              <SelectItem value="evento-prefeitura">Evento Prefeitura</SelectItem>
-              <SelectItem value="outros">Outros</SelectItem>
-            </SelectContent>
-          </Select>
+            <Select value={eventTypeFilter} onValueChange={setEventTypeFilter}>
+              <SelectTrigger className="w-full md:w-[180px]">
+                <Filter className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Tipo" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos Tipos</SelectItem>
+                <SelectItem value="eventos-igreja">Eventos Igreja</SelectItem>
+                <SelectItem value="evento-corporativo">Evento Corporativo</SelectItem>
+                <SelectItem value="show-arena">Show Arena</SelectItem>
+                <SelectItem value="evento-prefeitura">Evento Prefeitura</SelectItem>
+                <SelectItem value="outros">Outros</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-4 items-center">
+            <Select value={temperatureFilter} onValueChange={setTemperatureFilter}>
+              <SelectTrigger className="w-full md:w-[180px]">
+                <Thermometer className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Temperatura" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas Temperaturas</SelectItem>
+                <SelectItem value="hot">🔥 Quente</SelectItem>
+                <SelectItem value="warm">🟡 Morno</SelectItem>
+                <SelectItem value="cold">❄️ Frio</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <div className="flex-1 flex items-center gap-3">
+              <span className="text-sm text-muted-foreground whitespace-nowrap">
+                Score mín: {minScore}
+              </span>
+              <Slider
+                value={[minScore]}
+                onValueChange={(value) => setMinScore(value[0])}
+                max={100}
+                step={5}
+                className="flex-1"
+              />
+            </div>
+          </div>
         </div>
         <Table>
           <TableHeader>

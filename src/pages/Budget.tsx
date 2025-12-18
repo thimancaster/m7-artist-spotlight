@@ -13,6 +13,8 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { artists } from "@/data/artists";
 import { brazilianStates, citiesByState } from "@/data/locations";
+import { useLeadCaptureIntent } from "@/hooks/useLeadCaptureIntent";
+import LeadCaptureModal from "@/components/LeadCaptureModal";
 
 const budgetSchema = z.object({
   customerName: z.string().trim().min(2, "Nome deve ter pelo menos 2 caracteres").max(100, "Nome muito longo"),
@@ -43,6 +45,11 @@ const formatPhone = (value: string): string => {
 export default function Budget() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { showModal, setShowModal } = useLeadCaptureIntent({
+    timeoutMs: 45000,
+    enableExitIntent: true,
+    enableTimeoutIntent: true,
+  });
 
   const form = useForm<BudgetFormData>({
     resolver: zodResolver(budgetSchema),
@@ -353,6 +360,12 @@ export default function Budget() {
         </div>
       </main>
       <Footer />
+      
+      <LeadCaptureModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        sourcePage="budget"
+      />
     </div>
   );
 }

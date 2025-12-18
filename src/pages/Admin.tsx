@@ -18,6 +18,7 @@ interface Lead {
   id: string;
   contact_type: string;
   source_page: string;
+  artist_id: string | null;
   artist_name: string | null;
   customer_name: string | null;
   customer_email: string | null;
@@ -29,6 +30,8 @@ interface Lead {
   status: string;
   notes: string | null;
   created_at: string;
+  lead_score?: number;
+  lead_temperature?: string;
 }
 
 export default function Admin() {
