@@ -9,31 +9,33 @@ import { useLeadTracking } from "@/hooks/useLeadTracking";
 import { useLeadCaptureIntent } from "@/hooks/useLeadCaptureIntent";
 import LeadCaptureModal from "@/components/LeadCaptureModal";
 import WhatsAppCaptureModal from "@/components/WhatsAppCaptureModal";
-
 const Home = () => {
-  const { trackAndRedirectWithCapture } = useLeadTracking();
-  const { showModal, setShowModal } = useLeadCaptureIntent({
+  const {
+    trackAndRedirectWithCapture
+  } = useLeadTracking();
+  const {
+    showModal,
+    setShowModal
+  } = useLeadCaptureIntent({
     timeoutMs: 30000,
     enableExitIntent: true,
-    enableTimeoutIntent: true,
+    enableTimeoutIntent: true
   });
-  
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const whatsappMessage = "Olá, vim através da negociação com Thiago Ferreira, e gostaria de informações sobre shows da M7 Produções";
   const whatsappUrl = `https://wa.me/5562981548834?text=${encodeURIComponent(whatsappMessage)}`;
-
   const handleWhatsAppClick = () => {
     setShowWhatsAppModal(true);
   };
-
   const handleWhatsAppSubmit = (name: string, phone: string) => {
-    trackAndRedirectWithCapture(
-      { contactType: 'whatsapp', sourcePage: 'home' },
-      whatsappUrl,
-      { name, phone }
-    );
+    trackAndRedirectWithCapture({
+      contactType: 'whatsapp',
+      sourcePage: 'home'
+    }, whatsappUrl, {
+      name,
+      phone
+    });
   };
-  
   return <div className="min-h-screen bg-background">
       <Header />
       
@@ -53,7 +55,7 @@ const Home = () => {
           </p>
           <Button asChild size="lg" className="text-lg px-8 py-6">
             <Link to="/artistas">
-              ➡️ Ver Artistas
+              Ver Artistas
             </Link>
           </Button>
         </div>
@@ -111,28 +113,16 @@ const Home = () => {
                 Conhecer Artistas
               </Link>
             </Button>
-            <Button 
-              variant="outline" 
-              size="lg"
-              onClick={handleWhatsAppClick}
-            >
+            <Button variant="outline" size="lg" onClick={handleWhatsAppClick}>
               💬 Falar Agora
             </Button>
           </div>
         </div>
       </section>
 
-      <LeadCaptureModal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        sourcePage="home"
-      />
+      <LeadCaptureModal isOpen={showModal} onClose={() => setShowModal(false)} sourcePage="home" />
 
-      <WhatsAppCaptureModal
-        isOpen={showWhatsAppModal}
-        onClose={() => setShowWhatsAppModal(false)}
-        onSubmit={handleWhatsAppSubmit}
-      />
+      <WhatsAppCaptureModal isOpen={showWhatsAppModal} onClose={() => setShowWhatsAppModal(false)} onSubmit={handleWhatsAppSubmit} />
 
       <Footer />
     </div>;
