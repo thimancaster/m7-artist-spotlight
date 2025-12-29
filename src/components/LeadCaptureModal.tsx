@@ -7,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Sparkles } from "lucide-react";
-import { formatPhone, isValidPhone } from "@/lib/phoneFormat";
 
 interface LeadCaptureModalProps {
   isOpen: boolean;
@@ -22,46 +21,19 @@ export default function LeadCaptureModal({ isOpen, onClose, sourcePage }: LeadCa
     name: "",
     phone: "",
     eventType: "",
-    honeypot: "", // Anti-spam honeypot field
   });
-  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
-
-  const validate = (): boolean => {
-    const newErrors: { name?: string; phone?: string } = {};
-    
-    if (!formData.name.trim() || formData.name.trim().length < 2) {
-      newErrors.name = "Nome deve ter pelo menos 2 caracteres";
-    }
-    if (formData.name.length > 100) {
-      newErrors.name = "Nome muito longo";
-    }
-    if (!isValidPhone(formData.phone)) {
-      newErrors.phone = "Telefone inválido";
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Honeypot check - if filled, silently close
-    if (formData.honeypot) {
-      onClose();
-      return;
-    }
-    
-    if (!formData.eventType) {
+    if (!formData.name || !formData.phone || !formData.eventType) {
       toast({
-        title: "Campo obrigatório",
-        description: "Por favor, selecione o tipo de evento.",
+        title: "Campos obrigatórios",
+        description: "Por favor, preencha todos os campos.",
         variant: "destructive",
       });
       return;
     }
-
-    if (!validate()) return;
 
     setIsSubmitting(true);
 
@@ -69,7 +41,7 @@ export default function LeadCaptureModal({ isOpen, onClose, sourcePage }: LeadCa
       const { error } = await supabase.from('leads').insert({
         contact_type: 'quick_capture',
         source_page: sourcePage,
-        customer_name: formData.name.trim(),
+        customer_name: formData.name,
         customer_phone: formData.phone,
         event_type: formData.eventType,
         status: 'new',
@@ -85,8 +57,7 @@ export default function LeadCaptureModal({ isOpen, onClose, sourcePage }: LeadCa
       });
 
       onClose();
-      setFormData({ name: "", phone: "", eventType: "", honeypot: "" });
-      setErrors({});
+      setFormData({ name: "", phone: "", eventType: "" });
     } catch (error) {
       if (import.meta.env.DEV) {
         console.error('Error capturing lead:', error);
@@ -99,12 +70,6 @@ export default function LeadCaptureModal({ isOpen, onClose, sourcePage }: LeadCa
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatPhone(e.target.value);
-    setFormData({ ...formData, phone: formatted });
-    if (errors.phone) setErrors({ ...errors, phone: undefined });
   };
 
   return (
@@ -121,33 +86,16 @@ export default function LeadCaptureModal({ isOpen, onClose, sourcePage }: LeadCa
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4 pt-4">
-          {/* Honeypot field - hidden from users, visible to bots */}
-          <input
-            type="text"
-            name="website"
-            value={formData.honeypot}
-            onChange={(e) => setFormData({ ...formData, honeypot: e.target.value })}
-            className="absolute -left-[9999px] opacity-0 pointer-events-none"
-            tabIndex={-1}
-            autoComplete="off"
-            aria-hidden="true"
-          />
-          
           <div className="space-y-2">
             <Label htmlFor="name">Nome completo *</Label>
             <Input
               id="name"
               placeholder="Digite seu nome"
               value={formData.name}
-              onChange={(e) => {
-                setFormData({ ...formData, name: e.target.value });
-                if (errors.name) setErrors({ ...errors, name: undefined });
-              }}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               disabled={isSubmitting}
-              maxLength={100}
               required
             />
-            {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
           </div>
 
           <div className="space-y-2">
@@ -156,12 +104,10 @@ export default function LeadCaptureModal({ isOpen, onClose, sourcePage }: LeadCa
               id="phone"
               placeholder="(62) 98888-8888"
               value={formData.phone}
-              onChange={handlePhoneChange}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               disabled={isSubmitting}
-              maxLength={15}
               required
             />
-            {errors.phone && <p className="text-sm text-destructive">{errors.phone}</p>}
           </div>
 
           <div className="space-y-2">

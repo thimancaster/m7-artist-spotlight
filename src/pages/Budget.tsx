@@ -34,13 +34,17 @@ const budgetSchema = z.object({
 
 type BudgetFormData = z.infer<typeof budgetSchema>;
 
-// Reuse centralized phone formatter
-import { formatPhone } from "@/lib/phoneFormat";
+const formatPhone = (value: string): string => {
+  const numbers = value.replace(/\D/g, '');
+  if (numbers.length <= 2) return numbers;
+  if (numbers.length <= 6) return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
+  if (numbers.length <= 10) return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
+  return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7, 11)}`;
+};
 
 export default function Budget() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [honeypot, setHoneypot] = useState(""); // Anti-spam honeypot
   const { showModal, setShowModal } = useLeadCaptureIntent({
     timeoutMs: 45000,
     enableExitIntent: true,
@@ -67,16 +71,6 @@ export default function Budget() {
   const availableCities = eventState ? citiesByState[eventState] || [] : [];
 
   const onSubmit = async (data: BudgetFormData) => {
-    // Honeypot check - if filled, silently reset
-    if (honeypot) {
-      form.reset();
-      toast({
-        title: "✅ Solicitação enviada!",
-        description: "Entraremos em contato em breve.",
-      });
-      return;
-    }
-    
     setIsSubmitting(true);
 
     try {
@@ -111,9 +105,7 @@ export default function Budget() {
 
       form.reset();
     } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('Error submitting budget form:', error);
-      }
+      console.error('Error submitting budget form:', error);
       toast({
         title: "Erro ao enviar",
         description: "Não foi possível enviar sua solicitação. Tente novamente.",
@@ -138,18 +130,6 @@ export default function Budget() {
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 bg-card p-6 rounded-lg border shadow-lg">
-              {/* Honeypot field - hidden from users, visible to bots */}
-              <input
-                type="text"
-                name="website"
-                value={honeypot}
-                onChange={(e) => setHoneypot(e.target.value)}
-                className="absolute -left-[9999px] opacity-0 pointer-events-none"
-                tabIndex={-1}
-                autoComplete="off"
-                aria-hidden="true"
-              />
-              
               <FormField
                 control={form.control}
                 name="customerName"

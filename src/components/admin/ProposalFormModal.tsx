@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -62,20 +62,6 @@ export function ProposalFormModal({ isOpen, onClose, lead, proposal, onSuccess }
     notes: proposal?.notes || "",
   });
 
-  // Sync formData when lead or proposal changes
-  useEffect(() => {
-    setFormData({
-      artistId: proposal?.artist_id || lead.artist_id || "",
-      artistName: proposal?.artist_name || lead.artist_name || "",
-      value: proposal?.value?.toString() || "",
-      eventDate: proposal?.event_date || lead.event_date || "",
-      eventLocation: proposal?.event_location || lead.event_location || "",
-      eventType: proposal?.event_type || lead.event_type || "",
-      status: proposal?.status || "draft",
-      notes: proposal?.notes || "",
-    });
-  }, [lead, proposal]);
-
   const handleArtistChange = (artistId: string) => {
     const artist = artists.find(a => a.id === artistId);
     setFormData(prev => ({
@@ -136,9 +122,7 @@ export function ProposalFormModal({ isOpen, onClose, lead, proposal, onSuccess }
       onSuccess();
       onClose();
     } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error("Error saving proposal:", error);
-      }
+      console.error("Error saving proposal:", error);
       toast({
         title: "Erro",
         description: "Não foi possível salvar a proposta.",

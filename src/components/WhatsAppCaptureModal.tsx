@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MessageCircle } from "lucide-react";
-import { formatPhone, isValidPhone } from "@/lib/phoneFormat";
 
 interface WhatsAppCaptureModalProps {
   isOpen: boolean;
@@ -22,48 +21,14 @@ export default function WhatsAppCaptureModal({
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
-    honeypot: "", // Anti-spam honeypot field
   });
-  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
-
-  const validate = (): boolean => {
-    const newErrors: { name?: string; phone?: string } = {};
-    
-    if (!formData.name.trim() || formData.name.trim().length < 2) {
-      newErrors.name = "Nome deve ter pelo menos 2 caracteres";
-    }
-    if (formData.name.length > 100) {
-      newErrors.name = "Nome muito longo";
-    }
-    if (!isValidPhone(formData.phone)) {
-      newErrors.phone = "Telefone inválido";
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Honeypot check - if filled, silently reject
-    if (formData.honeypot) {
-      onClose();
-      return;
-    }
-    
-    if (validate()) {
-      onSubmit(formData.name.trim(), formData.phone);
-      setFormData({ name: "", phone: "", honeypot: "" });
-      setErrors({});
+    if (formData.name && formData.phone) {
+      onSubmit(formData.name, formData.phone);
       onClose();
     }
-  };
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatPhone(e.target.value);
-    setFormData({ ...formData, phone: formatted });
-    if (errors.phone) setErrors({ ...errors, phone: undefined });
   };
 
   return (
@@ -83,32 +48,15 @@ export default function WhatsAppCaptureModal({
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4 pt-4">
-          {/* Honeypot field - hidden from users, visible to bots */}
-          <input
-            type="text"
-            name="website"
-            value={formData.honeypot}
-            onChange={(e) => setFormData({ ...formData, honeypot: e.target.value })}
-            className="absolute -left-[9999px] opacity-0 pointer-events-none"
-            tabIndex={-1}
-            autoComplete="off"
-            aria-hidden="true"
-          />
-          
           <div className="space-y-2">
             <Label htmlFor="capture-name">Seu nome *</Label>
             <Input
               id="capture-name"
               placeholder="Digite seu nome"
               value={formData.name}
-              onChange={(e) => {
-                setFormData({ ...formData, name: e.target.value });
-                if (errors.name) setErrors({ ...errors, name: undefined });
-              }}
-              maxLength={100}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
             />
-            {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
           </div>
 
           <div className="space-y-2">
@@ -117,11 +65,9 @@ export default function WhatsAppCaptureModal({
               id="capture-phone"
               placeholder="(62) 98888-8888"
               value={formData.phone}
-              onChange={handlePhoneChange}
-              maxLength={15}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               required
             />
-            {errors.phone && <p className="text-sm text-destructive">{errors.phone}</p>}
           </div>
 
           <Button 
